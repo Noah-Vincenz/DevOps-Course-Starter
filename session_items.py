@@ -1,8 +1,9 @@
 from flask import session
 
 _DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
+    { 'id': 1, 'status': 'Not Started', 'title': 'Clean the living room' },
+    { 'id': 2, 'status': 'Not Started', 'title': 'Book appointment with Physio' },
+    { 'id': 3, 'status': 'Not Started', 'title': 'Finish Module 1 of DevOps Course' }
 ]
 
 
@@ -13,7 +14,7 @@ def get_items():
     Returns:
         list: The list of saved items.
     """
-    return session.get('items', _DEFAULT_ITEMS)
+    return sorted(session.get('items', _DEFAULT_ITEMS), key = lambda i: i['status'], reverse=True)
 
 
 def get_item(id):

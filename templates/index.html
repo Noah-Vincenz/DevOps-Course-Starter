@@ -10,9 +10,26 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+      <div class="list-group">
+        {% for item in items %}
+        <a href="#" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ item.id }}:   {{ item.title }}</h5>
+            <small>{{ item.status }}</small>
+          </div>
+        </a>
+        {% endfor %}
+      </div><br>
+      <form action="/add" method="post">
+        <label for="exampleInput1">Item to be added:</label><br>
+        <input type="text" name="input_field1" placeholder="title" id="exampleInput1">
+        <button class="btn btn-outline-primary" type="submit">Add your item</button>
+      </form>
+      <form action="/mark" method="post">
+        <label for="exampleInput2">Item to be marked as 'Completed':</label><br>
+        <input type="text" name="input_field2" placeholder="id" id="exampleInput2">
+        <button class="btn btn-outline-primary" type="submit">Complete your item</button>
+      </form>
     </div>
   </div>
 {% endblock %}
