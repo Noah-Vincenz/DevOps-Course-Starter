@@ -14,8 +14,9 @@
         {% for item in items %}
         <a href="#" class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ item.id }}:   {{ item.title }}</h5>
-            <small>{{ item.status }}</small>
+            <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
+            <!-- <h5 class="mb-1">{{ item.pos }}: {{ item.name }}</h5> -->
+            <small>status: {{ item.status }}</small>
           </div>
         </a>
         {% endfor %}
