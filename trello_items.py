@@ -2,7 +2,7 @@ from flask import session
 import requests
 import config
 import os
-from Card import Card
+from item import Item
 
 key = config.key
 token = config.token
@@ -26,7 +26,7 @@ def get_items():
         url2 = "https://api.trello.com/1/boards/{}/cards".format(board_id)
         cards = requests.request("GET", url2, params=query)
         for card in cards.json():
-            all_cards.append(Card(card['pos'], card['name'], get_list_name(card['id'])))
+            all_cards.append(Item(card['pos'], card['name'], get_list_name(card['id'])))
     return all_cards
 
 

@@ -1,4 +1,4 @@
-class Card:
+class Item:
     
     def __init__(self, position, name, status):
         self.position = position
