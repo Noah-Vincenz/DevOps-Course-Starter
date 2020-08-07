@@ -15,7 +15,6 @@
         <a href="#" class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
-            <!-- <h5 class="mb-1">{{ item.pos }}: {{ item.name }}</h5> -->
             <small>status: {{ item.status }}</small>
           </div>
         </a>
@@ -23,7 +22,7 @@
       </div><br>
       <form action="/add" method="post">
         <label for="exampleInput1">Item to be added:</label><br>
-        <input type="text" name="input_field1" placeholder="title" id="exampleInput1">
+        <input type="text" name="new_item_input" placeholder="title" id="exampleInput1">
         <button class="btn btn-outline-primary" type="submit">Add your item</button>
       </form>
       <form action="/mark" method="post">
