@@ -15,9 +15,14 @@ def add():
     trello.create_item(name, description)
     return redirect(url_for('index'))
 
-@app.route('/mark/<item_id>', methods=['POST'])
-def mark_item(item_id):
+@app.route('/complete/<item_id>', methods=['POST'])
+def complete_item(item_id):
     trello.complete_item(item_id)
+    return redirect(url_for('index'))
+
+@app.route('/undo/<item_id>', methods=['POST'])
+def undo_item(item_id):
+    trello.undo_item(item_id)
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

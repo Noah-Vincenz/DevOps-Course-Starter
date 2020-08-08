@@ -68,9 +68,23 @@ def create_item(title, description):
 
 def complete_item(item_id):
     """
-    Moves a card to the DONE list of the board.
+    Moves a card to the 'DONE' list of the board.
     """
     id_list = "5f297734a916318df131886e" # this is the id for the 'Done' list
+    url = "https://api.trello.com/1/cards/{}".format(item_id)
+    query = {
+        'key': key,
+        'token': token,
+        'idList': id_list
+    }
+    requests.request("PUT", url, params=query)
+
+
+def undo_item(item_id):
+    """
+    Moves a card to the 'TODO' list of the board.
+    """
+    id_list = '5f2977346edfad5675e78f48' # this is the id for the 'To Do' list
     url = "https://api.trello.com/1/cards/{}".format(item_id)
     query = {
         'key': key,

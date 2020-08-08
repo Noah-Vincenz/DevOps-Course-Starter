@@ -17,8 +17,11 @@
             <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
             <small>status: {{ item.status }}</small>
             <small>description: {{ item.description }}</small>
-            <form action="mark/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit">Complete item</button>
+            <form action="complete/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Complete</button>
+            </form>
+            <form action="undo/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Undo</button>
             </form>
           </div>
         </a>
