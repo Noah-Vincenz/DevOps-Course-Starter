@@ -26,7 +26,7 @@ def get_items():
         url2 = "https://api.trello.com/1/boards/{}/cards".format(board_id)
         cards = requests.request("GET", url2, params=query)
         for card in cards.json():
-            all_cards.append(Item(card['id'], card['pos'], card['name'], get_list_name(card['id'])))
+            all_cards.append(Item(card['id'], card['pos'], card['name'], card['desc'], get_list_name(card['id'])))
     return all_cards
 
 
@@ -46,7 +46,7 @@ def get_list_name(card_id):
     return list.json()['name']
 
 
-def create_item(title):
+def create_item(title, description):
     """
     Creates a card in the TO DO list of the board.
 
@@ -58,6 +58,7 @@ def create_item(title):
         'key': key,
         'token': token,
         'name': title, 
+        'desc': description,
         'pos': len(get_items()) + 1, 
         'idList': '5f2977346edfad5675e78f48' # this is the id for the 'To Do' list
     }

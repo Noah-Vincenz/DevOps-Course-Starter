@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import session_items as session
 import trello_items as trello
 
 app = Flask(__name__)
@@ -11,7 +10,9 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add():
-    trello.create_item(request.form.get('new_item_input'))
+    name = request.form.get('new_item_name')
+    description = request.form.get('new_item_description')
+    trello.create_item(name, description)
     return redirect(url_for('index'))
 
 @app.route('/mark/<item_id>', methods=['POST'])
