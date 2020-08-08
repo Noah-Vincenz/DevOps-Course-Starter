@@ -14,12 +14,9 @@ def add():
     trello.create_item(request.form.get('new_item_input'))
     return redirect(url_for('index'))
 
-@app.route('/mark', methods=['POST'])
-def mark():
-    id = request.form.get('input_field2')
-    item = session.get_item(id)
-    item['status'] = 'Completed'
-    session.save_item(item)
+@app.route('/mark/<item_id>', methods=['POST'])
+def mark_item(item_id):
+    trello.complete_item(item_id)
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

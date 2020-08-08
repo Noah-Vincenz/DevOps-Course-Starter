@@ -16,6 +16,9 @@
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
             <small>status: {{ item.status }}</small>
+            <form action="mark/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Complete item</button>
+            </form>
           </div>
         </a>
         {% endfor %}
@@ -24,11 +27,6 @@
         <label for="exampleInput1">Item to be added:</label><br>
         <input type="text" name="new_item_input" placeholder="title" id="exampleInput1">
         <button class="btn btn-outline-primary" type="submit">Add your item</button>
-      </form>
-      <form action="/mark" method="post">
-        <label for="exampleInput2">Item to be marked as 'Completed':</label><br>
-        <input type="text" name="input_field2" placeholder="id" id="exampleInput2">
-        <button class="btn btn-outline-primary" type="submit">Complete your item</button>
       </form>
     </div>
   </div>

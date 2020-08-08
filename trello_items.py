@@ -26,7 +26,7 @@ def get_items():
         url2 = "https://api.trello.com/1/boards/{}/cards".format(board_id)
         cards = requests.request("GET", url2, params=query)
         for card in cards.json():
-            all_cards.append(Item(card['pos'], card['name'], get_list_name(card['id'])))
+            all_cards.append(Item(card['id'], card['pos'], card['name'], get_list_name(card['id'])))
     return all_cards
 
 
@@ -59,7 +59,21 @@ def create_item(title):
         'token': token,
         'name': title, 
         'pos': len(get_items()) + 1, 
-        'idList': '5f2977346edfad5675e78f48' # this is the id for the To Do list
+        'idList': '5f2977346edfad5675e78f48' # this is the id for the 'To Do' list
     }
     card = requests.request("POST", url, params=query)
     return card
+
+
+def complete_item(item_id):
+    """
+    Moves a card to the DONE list of the board.
+    """
+    id_list = "5f297734a916318df131886e" # this is the id for the 'Done' list
+    url = "https://api.trello.com/1/cards/{}".format(item_id)
+    query = {
+        'key': key,
+        'token': token,
+        'idList': id_list
+    }
+    requests.request("PUT", url, params=query)
