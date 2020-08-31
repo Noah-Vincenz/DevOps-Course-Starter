@@ -1,13 +1,12 @@
 from flask import session
 import requests
-import config
 import os
 from card import Card
 
-key = config.key
-token = config.token
-todo_list_id = config.todo_list_id
-done_list_id = config.done_list_id
+key = os.getenv('API_KEY')
+token = os.getenv('API_TOKEN')
+todo_list_id =  os.getenv('TODO_LIST_ID')
+done_list_id = os.getenv('DONE_LIST_ID')
 
 def get_items():
     """
