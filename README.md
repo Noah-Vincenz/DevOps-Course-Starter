@@ -13,7 +13,16 @@ $ source setup.sh
 $ source setup.sh --windows
 ```
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
+Once the setup script has completed and all packages have been installed, add the following variables to the *.env* file:
+```
+API_KEY = ... # your trello api key
+API_TOKEN = ... # your trello api token
+TODO_LIST_ID = ... # your 'todo' list id
+DONE_LIST_ID = ... # your 'done' list id
+```
+Note that *.env* has been added to the gitignore file so that these secrets will not be commited to git.
+
+Following this, start the Flask app by running:
 ```bash
 $ flask run
 ```
