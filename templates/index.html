@@ -17,12 +17,15 @@
             <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
             <small>status: {{ item.status }}</small>
             <small>description: {{ item.description }}</small>
+            {% if item.status == "To Do" %}
             <form action="complete/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary" type="submit">Complete</button>
             </form>
+            {% elif item.status == "Done" %}
             <form action="undo/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary" type="submit">Undo</button>
             </form>
+            {% endif %}
           </div>
         </a>
         {% endfor %}
