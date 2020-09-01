@@ -11,10 +11,10 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <div class="list-group">
-        {% for item in view_model.items %}
+        {% for item in view_model.todo_items %}
         <a href="#" class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ item.position }}: {{ item.name }}</h5>
+            <h5 class="mb-1">{{ item.name }}</h5>
             <small>status: {{ item.status }}</small>
             <small>description: {{ item.description }}</small>
             {% if item.status == "To Do" %}

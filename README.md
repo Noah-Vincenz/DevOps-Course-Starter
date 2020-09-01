@@ -22,7 +22,12 @@ DONE_LIST_ID=... # your 'done' list id
 ```
 Note that *.env* has been added to the gitignore file so that these secrets will not be commited to git.
 
-Following this, start the Flask app by running:
+Following this, you can then run all the test by running:
+```bash
+$ python -m pytest
+```
+
+If all tests succeed, start the Flask app by running:
 ```bash
 $ flask run
 ```
