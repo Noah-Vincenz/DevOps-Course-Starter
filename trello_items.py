@@ -5,7 +5,8 @@ from card import Card
 
 key = os.getenv('API_KEY')
 token = os.getenv('API_TOKEN')
-todo_list_id =  os.getenv('TODO_LIST_ID')
+todo_list_id = os.getenv('TODO_LIST_ID')
+doing_list_id = os.getenv('DOING_LIST_ID')
 done_list_id = os.getenv('DONE_LIST_ID')
 
 def get_items():
@@ -99,6 +100,20 @@ def create_item(title, description):
     return card
 
 
+def start_item(item_id):
+    """
+    Moves a card to the 'DOING' list of the board.
+    """
+    id_list = doing_list_id # this is the id for the 'Doing' list
+    url = "https://api.trello.com/1/cards/{}".format(item_id)
+    query = {
+        'key': key,
+        'token': token,
+        'idList': id_list
+    }
+    requests.request("PUT", url, params=query)
+
+
 def complete_item(item_id):
     """
     Moves a card to the 'DONE' list of the board.
@@ -115,7 +130,21 @@ def complete_item(item_id):
 
 def undo_item(item_id):
     """
-    Moves a card to the 'TODO' list of the board.
+    Moves a card to the 'DOING' list of the board.
+    """
+    id_list = doing_list_id # this is the id for the 'Doing' list
+    url = "https://api.trello.com/1/cards/{}".format(item_id)
+    query = {
+        'key': key,
+        'token': token,
+        'idList': id_list
+    }
+    requests.request("PUT", url, params=query)
+
+
+def stop_item(item_id):
+    """
+    Moves a card to the 'To Do' list of the board.
     """
     id_list = todo_list_id # this is the id for the 'To Do' list
     url = "https://api.trello.com/1/cards/{}".format(item_id)
