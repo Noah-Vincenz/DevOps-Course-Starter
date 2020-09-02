@@ -24,7 +24,7 @@ def get_items():
         cards = get_cards_from_board(board['id'])
         for card in cards:
             list_name = get_list_name(card['id'])
-            new_card = Card(card['id'], card['name'], card['desc'], list_name)
+            new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
             if list_name == "To Do":
                 todo_cards.append(new_card)
             elif list_name == "Doing":
