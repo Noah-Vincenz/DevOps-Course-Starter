@@ -15,20 +15,13 @@ def get_items():
     Returns:
         list: The nested list of cards containing all cards constructed using the Card class.
     """
-    url1 = "https://api.trello.com/1/members/me/boards"
-    query = {
-        'key': key,
-        'token': token
-    }
-    boards = requests.request("GET", url1, params=query)
+    boards = get_all_boards()
     todo_cards = []
     doing_cards = []
     done_cards = []
-    for board in boards.json():
-        board_id = board['id']
-        url2 = "https://api.trello.com/1/boards/{}/cards".format(board_id)
-        cards = requests.request("GET", url2, params=query)
-        for card in cards.json():
+    for board in boards:
+        cards = get_cards_from_board(board['id'])
+        for card in cards:
             list_name = get_list_name(card['id'])
             new_card = Card(card['id'], card['name'], card['desc'], list_name)
             if list_name == "To Do":
@@ -38,6 +31,36 @@ def get_items():
             else:
                 done_cards.append(new_card)
     return [todo_cards, doing_cards, done_cards]
+
+
+def get_cards_from_board(board_id):
+    """
+    Fetches all cards from a specific Trello board.
+
+    Returns:
+        list: The list of cards.
+    """
+    url = "https://api.trello.com/1/boards/{}/cards".format(board_id)
+    query = {
+        'key': key,
+        'token': token
+    }
+    return requests.request("GET", url, params=query).json()
+
+
+def get_all_boards():
+    """
+    Fetches all boards from Trello.
+
+    Returns:
+        list: The list of boards.
+    """
+    url1 = "https://api.trello.com/1/members/me/boards"
+    query = {
+        'key': key,
+        'token': token
+    }
+    return requests.request("GET", url1, params=query).json()
 
 
 def get_list_name(card_id):
