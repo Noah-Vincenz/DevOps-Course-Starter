@@ -2,126 +2,126 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
+  <div class="jumbotron" style="border-style: solid; border-color: darkgray; border-width: 1px;">
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Items</h1>
-        <table class="table table-dark table-hover">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col" style="font-size: 22px;">TODO</th>
-              <th scope="col">Item</th>
-              <th scope="col">Status</th>
-              <th scope="col">Description</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in view_model.todo_items %}
-              <tr>
-                <td></td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.description }}</td>
-                <td>
-                  <form action="start/{{ item.id }}" method="post">
-                    <button class="btn btn-outline-primary" type="submit">Start</button>
-                  </form>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-          <thead class="thead-light">
-            <tr>
-              <th scope="col" style="font-size: 22px;">DOING</th>
-              <th scope="col">Item</th>
-              <th scope="col">Status</th>
-              <th scope="col">Description</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in view_model.doing_items %}
-              <tr>
-                <td></td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.description }}</td>
-                <td>
-                  <form style="float: left; margin-right: 5px;" action="stop/{{ item.id }}" method="post">
-                    <button class="btn btn-outline-primary" type="submit">Stop</button>
-                  </form>
-                  <form action="complete/{{ item.id }}" method="post">
-                    <button class="btn btn-outline-primary" type="submit">Complete</button>
-                  </form>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-          <thead class="thead-light">
-            <tr>
-              <th scope="col" style="font-size: 22px;">DONE</th>
-              <th scope="col">Item</th>
-              <th scope="col">Status</th>
-              <th scope="col">Description</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if view_model.done_items|length < 5 %}
-              {% for item in view_model.done_items %}
-                <tr>
-                  <td></td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.status }}</td>
-                  <td>{{ item.description }}</td>
-                  <td>
-                    <form action="undo/{{ item.id }}" method="post">
-                      <button class="btn btn-outline-primary" type="submit">Undo</button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
-            {% else %}
-              {% for item in view_model.recent_done_items(view_model.done_items) %}
-                <tr>
-                  <td></td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.status }}</td>
-                  <td>{{ item.description }}</td>
-                  <td>
-                    <form action="undo/{{ item.id }}" method="post">
-                      <button class="btn btn-outline-primary" type="submit">Undo</button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
-              <tr>
-                <td colspan="5">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" style="width: 100%;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Old Items
-                    </button>
-                    <div class="dropdown-menu" style="width: 100%;" aria-labelledby="dropdownMenu2">
-                      {% for item in view_model.old_done_items(view_model.done_items) %}
-                      <button class="dropdown-item" type="button">{{ item.name }}</button>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            {% endif %}
-          </tbody>
-        </table><br>
-      <form action="/add" method="post">
-        <h3>Add a new item:</h3>
+  <h1>Items</h1>
+  <table class="table table-dark table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" style="font-size: 22px;">TODO</th>
+        <th scope="col">Item</th>
+        <th scope="col">Status</th>
+        <th scope="col">Description</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in view_model.todo_items %}
+        <tr>
+          <td></td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.status }}</td>
+          <td>{{ item.description }}</td>
+          <td>
+            <form action="start/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Start</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" style="font-size: 22px;">DOING</th>
+        <th scope="col">Item</th>
+        <th scope="col">Status</th>
+        <th scope="col">Description</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in view_model.doing_items %}
+        <tr>
+          <td></td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.status }}</td>
+          <td>{{ item.description }}</td>
+          <td>
+            <form style="float: left; margin-right: 5px;" action="stop/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Stop</button>
+            </form>
+            <form action="complete/{{ item.id }}" method="post">
+              <button class="btn btn-outline-primary" type="submit">Complete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" style="font-size: 22px;">DONE</th>
+        <th scope="col">Item</th>
+        <th scope="col">Status</th>
+        <th scope="col">Description</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if view_model.done_items|length < 5 %}
+        {% for item in view_model.done_items %}
+          <tr>
+            <td></td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.description }}</td>
+            <td>
+              <form action="undo/{{ item.id }}" method="post">
+                <button class="btn btn-outline-primary" type="submit">Undo</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        {% for item in view_model.recent_done_items(view_model.done_items) %}
+          <tr>
+            <td></td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.description }}</td>
+            <td>
+              <form action="undo/{{ item.id }}" method="post">
+                <button class="btn btn-outline-primary" type="submit">Undo</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="5">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" style="width: 100%;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Old Items
+              </button>
+              <div class="dropdown-menu" style="width: 100%;" aria-labelledby="dropdownMenu2">
+                {% for item in view_model.old_done_items(view_model.done_items) %}
+                <button class="dropdown-item" type="button">{{ item.name }}</button>
+                {% endfor %}
+              </div>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table><br>
+  <div style="margin-bottom: 50px; background-color: #f2f2f2; border-style: solid; border-color: darkgray; border-width: 1px;">
+    <form action="/add" method="post" style="padding: 10px;">
+      <h3>Add a new item:</h3>
+      <div style="width: 100%;">
         <input type="text" name="new_item_name" placeholder="title" id="exampleInput1">
         <input type="text" name="new_item_description" placeholder="description" id="exampleInput2">
         <button class="btn btn-outline-primary" type="submit">Add your item</button>
-      </form><br>
-    </div>
+      </div>
+    </form><br>
   </div>
 {% endblock %}
