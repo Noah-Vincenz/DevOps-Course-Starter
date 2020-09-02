@@ -2,8 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 import trello_items as trello
 from viewmodel import ViewModel
 
-app = Flask(__name__)
-app.config.from_object('flask_config.Config')
+# app = Flask(__name__)
+# app.config.from_object('flask_config.Config')
+
+def create_app():
+    app = Flask(__name__) 
+    app.config.from_object('app_config.Config')# app.config.from_object('flask_config.Config')
+    # All the routes and setup code etc
+    return app
 
 @app.route('/')
 def index():
@@ -38,5 +44,5 @@ def stop_item(item_id):
     trello.stop_item(item_id)
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
