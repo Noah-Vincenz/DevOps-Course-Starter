@@ -77,35 +77,35 @@ def test_recent_done_items_double(monkeypatch):
     result_list = vm.recent_done_items(items)
     assert result_list == [card2, card3]
 
-def test_older_done_items_empty_list(monkeypatch):
+def test_old_done_items_empty_list(monkeypatch):
     items = []
     monkeypatch.setattr(ViewModel, 'today', lambda self: today_mock)
-    result_list = vm.older_done_items(items)
+    result_list = vm.old_done_items(items)
     assert result_list == []
 
-def test_older_done_items_empty(monkeypatch):
+def test_old_done_items_empty(monkeypatch):
     card1 = Card("id", "name", "description", "status", "2020-09-03 12:16:26.061713")
     card2 = Card("id", "name", "description", "status", "2020-09-03 11:16:26.061713")
     card3 = Card("id", "name", "description", "status", "2020-09-03 12:16:26.061713")
     items = [card1, card2, card3]
     monkeypatch.setattr(ViewModel, 'today', lambda self: today_mock)
-    result_list = vm.older_done_items(items)
+    result_list = vm.old_done_items(items)
     assert result_list == []
 
-def test_older_done_items_single(monkeypatch):
+def test_old_done_items_single(monkeypatch):
     card1 = Card("id", "name", "description", "status", "2020-09-01 12:16:26.061713")
     card2 = Card("id", "name", "description", "status", "2020-09-02 11:16:26.061713")
     card3 = Card("id", "name", "description", "status", "2020-09-02 12:16:26.061713")
     items = [card1, card2, card3]
     monkeypatch.setattr(ViewModel, 'today', lambda self: today_mock)
-    result_list = vm.older_done_items(items)
+    result_list = vm.old_done_items(items)
     assert result_list == [card1]
 
-def test_older_done_items_double(monkeypatch):
+def test_old_done_items_double(monkeypatch):
     card1 = Card("id", "name", "description", "status", "2020-09-01 12:16:26.061713")
     card2 = Card("id", "name", "description", "status", "2020-09-01 11:16:26.061713")
     card3 = Card("id", "name", "description", "status", "2020-09-02 12:16:26.061713")
     items = [card1, card2, card3]
     monkeypatch.setattr(ViewModel, 'today', lambda self: today_mock)
-    result_list = vm.older_done_items(items)
+    result_list = vm.old_done_items(items)
     assert result_list == [card1, card2]

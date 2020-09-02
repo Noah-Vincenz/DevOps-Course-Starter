@@ -27,7 +27,7 @@ class ViewModel:
                 list_to_return.append(item)
         return list_to_return
     
-    def older_done_items(self, items):
+    def old_done_items(self, items):
         list_to_return = []
         for item in items:
             if self.older_date(item.last_modified, self.today()):
