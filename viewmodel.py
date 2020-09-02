@@ -1,3 +1,6 @@
+from datetime import datetime
+import dateutil.parser
+
 class ViewModel:
 
     def __init__(self, todo_items, doing_items, done_items):
@@ -16,3 +19,17 @@ class ViewModel:
     @property
     def done_items(self):
         return self._done_items
+
+    def recent_done_items(self, items):
+        list_to_return = []
+        for item in items:
+            if self.same_date(self.today(), item.last_modified):
+                list_to_return.append(item)
+        return list_to_return
+
+    def same_date(self, today, last_modified):
+        date_obj = dateutil.parser.parse(last_modified)
+        return date_obj.date() == today.date()
+
+    def today(self):
+        return datetime.today()
