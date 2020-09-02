@@ -23,20 +23,24 @@ class ViewModel:
     def recent_done_items(self, items):
         list_to_return = []
         for item in items:
-            if self.same_date(self.today(), item.last_modified):
+            if self.same_date(item.last_modified, self.today()):
                 list_to_return.append(item)
         return list_to_return
     
     def older_done_items(self, items):
         list_to_return = []
         for item in items:
-            if not self.same_date(self.today(), item.last_modified):
+            if self.older_date(item.last_modified, self.today()):
                 list_to_return.append(item)
         return list_to_return
 
-    def same_date(self, today, last_modified):
+    def same_date(self, last_modified, today):
         date_obj = dateutil.parser.parse(last_modified)
         return date_obj.date() == today.date()
+
+    def older_date(self, last_modified, today):
+        date_obj = dateutil.parser.parse(last_modified)
+        return date_obj.date() < today.date()
 
     def today(self):
         return datetime.today()
