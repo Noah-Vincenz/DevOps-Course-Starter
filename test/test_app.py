@@ -4,6 +4,24 @@ import requests
 from app import app
 from dotenv import load_dotenv, find_dotenv
 from card import Card
+import os
+from threading import Thread
+
+@pytest.fixture(scope='module')
+def test_app():
+    # Create the new board & update the board id environment variable 
+    board_id = trello.create_trello_board('Test Board')
+    os.environ['TRELLO_BOARD_ID'] = board_id
+    # construct the new application
+    application = app.create_app()
+    # start the app in its own thread.
+    thread = Thread(target=lambda: application.run(use_reloader=False)) 
+    thread.daemon = True
+    thread.start()
+    yield app
+    # Tear Down
+    thread.join(1) 
+    trello.delete_trello_board(board_id)
 
 @pytest.fixture
 def client():

@@ -154,3 +154,32 @@ def stop_item(item_id):
         'idList': id_list
     }
     requests.request("PUT", url, params=query)
+
+
+def create_trello_board(name):
+    """
+    Creates a new board with given name.
+
+    Returns:
+        The id of the newly created board.
+    """
+    url = "https://api.trello.com/1/boards"
+    query = {
+        'key': key,
+        'token': token,
+        'name': name
+    }
+    response = requests.request("POST", url, params=query)
+    return response.json()['id']
+
+
+def delete_trello_board(id):
+    """
+    Deletes a board with given id. Returns nothing.
+    """
+    url = "https://api.trello.com/1/boards/{}".format(id)
+    query = {
+        'key': key,
+        'token': token
+    }
+    requests.request("DELETE", url, params=query)
