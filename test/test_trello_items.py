@@ -51,7 +51,6 @@ def test_get_items(monkeypatch):
     card1 = {'id':id1, 'name':name1, 'desc':desc1, 'dateLastActivity':date1}
     card2 = {'id':id2, 'name':name2, 'desc':desc2, 'dateLastActivity':date2}
     
-    monkeypatch.setattr(trello, 'get_all_boards', lambda: [{'id':'board1'}])
     monkeypatch.setattr(trello, 'get_cards_from_board', lambda board_id: [card1, card2])
     monkeypatch.setattr(trello, 'get_list_name', lambda card_id: mock_get_list_name(card_id))
 
@@ -62,18 +61,3 @@ def test_get_items(monkeypatch):
     ]
     actual_result = trello.get_items()
     same_items(expected_result, actual_result)
-
-def test_start_item(monkeypatch):
-    def mock_get_list_name(card_id):
-        print("in here")
-        if card_id == "1":
-            return "To Do"
-        elif card_id == "2":
-            return "Doing"
-        else:
-            return "Done"
-
-    monkeypatch.setattr(trello, 'get_list_name', lambda card_id: mock_get_list_name(card_id))
-    trello.start_item(1)
-    assert trello.get_list_name("1") == "Doing"
-

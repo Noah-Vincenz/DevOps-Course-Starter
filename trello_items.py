@@ -8,29 +8,28 @@ token = os.getenv('API_TOKEN')
 todo_list_id = os.getenv('TODO_LIST_ID')
 doing_list_id = os.getenv('DOING_LIST_ID')
 done_list_id = os.getenv('DONE_LIST_ID')
+board_id = os.getenv('TRELLO_BOARD_ID')
 
 def get_items():
     """
-    Fetches all cards from Trello.
+    Fetches all cards from our Trello board.
 
     Returns:
         list: The nested list of cards containing all cards constructed using the Card class.
     """
-    boards = get_all_boards()
     todo_cards = []
     doing_cards = []
     done_cards = []
-    for board in boards:
-        cards = get_cards_from_board(board['id'])
-        for card in cards:
-            list_name = get_list_name(card['id'])
-            new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
-            if list_name == "To Do":
-                todo_cards.append(new_card)
-            elif list_name == "Doing":
-                doing_cards.append(new_card)
-            else:
-                done_cards.append(new_card)
+    cards = get_cards_from_board(board_id)
+    for card in cards:
+        list_name = get_list_name(card['id'])
+        new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
+        if list_name == "To Do":
+            todo_cards.append(new_card)
+        elif list_name == "Doing":
+            doing_cards.append(new_card)
+        else:
+            done_cards.append(new_card)
     return [todo_cards, doing_cards, done_cards]
 
 
