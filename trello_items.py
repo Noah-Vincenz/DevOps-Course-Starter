@@ -56,12 +56,12 @@ def get_all_boards():
     Returns:
         list: The list of boards.
     """
-    url1 = "https://api.trello.com/1/members/me/boards"
+    url = "https://api.trello.com/1/members/me/boards"
     query = {
         'key': key,
         'token': token
     }
-    return requests.request("GET", url1, params=query).json()
+    return requests.request("GET", url, params=query).json()
 
 
 def get_list_name(card_id):
