@@ -26,6 +26,7 @@ def get_items():
             done_cards.append(new_card)
     return [todo_cards, doing_cards, done_cards]
 
+
 def get_cards_from_board(board_id):
     """
     Fetches all cards from a specific Trello board.
@@ -53,6 +54,22 @@ def get_all_boards():
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN')
     }
+    return requests.request("GET", url, params=query).json()
+
+
+def get_all_lists_on_board(board_id):
+    """
+    Fetches all lists from a Trello board.
+
+    Returns:
+        list: The lists on the boards
+    """
+    url = "https://api.trello.com/1/boards/{}/lists".format(board_id)
+    query = {
+        'key': os.getenv('API_KEY'),
+        'token': os.getenv('API_TOKEN')
+    }
+    print(requests.request("GET", url, params=query).json())
     return requests.request("GET", url, params=query).json()
 
 
@@ -96,7 +113,6 @@ def start_item(item_id):
     """
     Moves a card to the 'DOING' list of the board.
     """
-    id_list = doing_list_id # this is the id for the 'Doing' list
     url = "https://api.trello.com/1/cards/{}".format(item_id)
     query = {
         'key': os.getenv('API_KEY'),

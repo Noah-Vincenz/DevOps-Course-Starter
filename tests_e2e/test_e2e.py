@@ -7,15 +7,17 @@ import trello_items as trello
 from dotenv import load_dotenv, find_dotenv
 import app
 import time
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 
 @pytest.fixture(scope='module')
 def test_app():
     # Create the new board & update the board id environment variable 
-    # Use our real config 
-    file_path = find_dotenv('./.env')
+    # Use our test e2e config instead of the 'real' version 
+    file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
     board_id = create_trello_board('Test Board')
-    os.environ['TRELLO_BOARD_ID'] = board_id
+    update_env_vars(board_id)
     # construct the new application
     application = app.create_app()
     # start the app in its own thread.
@@ -27,6 +29,18 @@ def test_app():
     thread.join(1) 
     delete_trello_board(board_id)
 
+def update_env_vars(board_id):
+    os.environ['TRELLO_BOARD_ID'] = board_id
+    lists = trello.get_all_lists_on_board(board_id)
+    for list in lists:
+        if list['name'] == 'To Do':
+            os.environ['TODO_LIST_ID'] = list['id']
+        elif list['name'] == 'Doing':
+            os.environ['DOING_LIST_ID'] = list['id']
+        else:
+            os.environ['DONE_LIST_ID'] = list['id']
+
+
 @pytest.fixture(scope="module")
 def driver():
     with webdriver.Firefox() as driver:
@@ -36,24 +50,22 @@ def test_task_journey(driver, test_app):
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
     #Create new item
-    # els = driver.find_elements_by_tag_name("td")
-    # for el in els:
-    #     print(el)
-    # print(driver.page_source)
-    # assert len(els) == 0
+    els = driver.find_elements_by_tag_name("td")
+    assert len(els) == 0
     input1 = driver.find_element_by_id("title-input")
     input2 = driver.find_element_by_id("description-input")
-    # input1.text = "Clean room"
-    # input2.text = "Tidy room and wipe desk"
+    input1.send_keys("Clean room")
+    input2.send_keys("Tidy room and wipe desk")
     btn = driver.find_element_by_id("create-btn")
     btn.click()
-    time.sleep(2)
-    # print(driver.page_source)
+    time.sleep(1)
+    content = driver.page_source
+    assert 'Clean room' in content
+    assert 'Tidy room and wipe desk' in content
     els = driver.find_elements_by_tag_name("td")
-    # for el in els:
-    #     print(el)
-    # assert len(els) == 1
-    # print(els[0])
+    assert len(els) == 5
+    #Start item
+
 
 def create_trello_board(name):
     """
