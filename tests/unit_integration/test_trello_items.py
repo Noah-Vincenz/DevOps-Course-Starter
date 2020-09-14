@@ -2,6 +2,8 @@ import pytest
 import trello_items as trello
 from flask import jsonify
 from card import Card
+import os
+import requests
 
 def same_items(arr1, arr2):
     assert len(arr1) == len(arr2)
@@ -60,3 +62,27 @@ def test_get_items(monkeypatch):
     ]
     actual_result = trello.get_items()
     same_items(expected_result, actual_result)
+
+
+class MockResponse:
+    def __init__(self, json_data, status_code):
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+
+def test_get_all_lists_on_board(monkeypatch):
+    def mocked_requests_get(url):
+        if url == 'https://api.trello.com/1/boards/1/lists':
+            return MockResponse({"name": "todo_list"}, "200")
+        elif url == 'https://api.trello.com/1/boards/2/lists':
+            return MockResponse({"name": "doing_list"}, "200")
+        return MockResponse(json_data={}, status_code="404")
+
+    monkeypatch.setattr(requests, 'request', lambda type, url, params: mocked_requests_get(url))
+    assert trello.get_all_lists_on_board('1') == MockResponse({"name": "todo_list"}, "200").json_data
+    assert trello.get_all_lists_on_board('2') == MockResponse({"name": "doing_list"}, "200").json_data
+    assert trello.get_all_lists_on_board('3') == MockResponse({}, "404").json_data
+
