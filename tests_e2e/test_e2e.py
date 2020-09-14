@@ -14,7 +14,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 def test_app():
     # Create the new board & update the board id environment variable 
     # Use our test e2e config instead of the 'real' version 
-    file_path = find_dotenv('.env.test')
+    file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
     board_id = create_trello_board('Test Board')
     update_env_vars(board_id)
@@ -52,19 +52,33 @@ def test_task_journey(driver, test_app):
     #Create new item
     els = driver.find_elements_by_tag_name("td")
     assert len(els) == 0
-    input1 = driver.find_element_by_id("title-input")
-    input2 = driver.find_element_by_id("description-input")
-    input1.send_keys("Clean room")
-    input2.send_keys("Tidy room and wipe desk")
-    btn = driver.find_element_by_id("create-btn")
-    btn.click()
+    driver.find_element_by_id("title-input").send_keys("Clean room")
+    driver.find_element_by_id("description-input").send_keys("Tidy room and wipe desk")
+    driver.find_element_by_id("create-btn").click()
     time.sleep(1)
-    content = driver.page_source
-    assert 'Clean room' in content
-    assert 'Tidy room and wipe desk' in content
     els = driver.find_elements_by_tag_name("td")
     assert len(els) == 5
+    assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
+    assert driver.find_element_by_xpath("//td[3]").text == "To Do"
+    assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
     #Start item
+    driver.find_element_by_id("start-btn").click()
+    time.sleep(1)
+    assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
+    assert driver.find_element_by_xpath("//td[3]").text == "Doing"
+    assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
+    #Complete item
+    driver.find_element_by_id("complete-btn").click()
+    time.sleep(1)
+    assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
+    assert driver.find_element_by_xpath("//td[3]").text == "Done"
+    assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
+    #Undo item
+    driver.find_element_by_id("undo-btn").click()
+    time.sleep(1)
+    assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
+    assert driver.find_element_by_xpath("//td[3]").text == "Doing"
+    assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
 
 
 def create_trello_board(name):

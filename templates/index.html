@@ -17,7 +17,7 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="todo-tbody">
       {% for item in view_model.todo_items %}
         <tr>
           <td></td>
@@ -26,7 +26,7 @@
           <td>{{ item.description }}</td>
           <td>
             <form action="start/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit">Start</button>
+              <button class="btn btn-outline-primary" type="submit" id="start-btn">Start</button>
             </form>
           </td>
         </tr>
@@ -41,7 +41,7 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="doing-tbody">
       {% for item in view_model.doing_items %}
         <tr>
           <td></td>
@@ -53,7 +53,7 @@
               <button class="btn btn-outline-primary" type="submit">Stop</button>
             </form>
             <form action="complete/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit">Complete</button>
+              <button class="btn btn-outline-primary" type="submit" id="complete-btn">Complete</button>
             </form>
           </td>
         </tr>
@@ -68,7 +68,7 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="done-tbody">
       {% if view_model.done_items|length < 5 %}
         {% for item in view_model.done_items %}
           <tr>
@@ -78,7 +78,7 @@
             <td>{{ item.description }}</td>
             <td>
               <form action="undo/{{ item.id }}" method="post">
-                <button class="btn btn-outline-primary" type="submit">Undo</button>
+                <button class="btn btn-outline-primary" type="submit" id="undo-btn">Undo</button>
               </form>
             </td>
           </tr>
