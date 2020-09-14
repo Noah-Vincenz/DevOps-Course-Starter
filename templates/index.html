@@ -50,7 +50,7 @@
           <td>{{ item.description }}</td>
           <td>
             <form style="float: left; margin-right: 5px;" action="stop/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit">Stop</button>
+              <button class="btn btn-outline-primary" type="submit" id="stop-btn">Stop</button>
             </form>
             <form action="complete/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary" type="submit" id="complete-btn">Complete</button>

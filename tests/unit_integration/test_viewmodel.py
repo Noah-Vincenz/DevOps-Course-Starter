@@ -2,6 +2,7 @@ from viewmodel import ViewModel
 import dateutil.parser
 import pytest
 from card import Card
+from datetime import datetime
 
 vm = ViewModel(["some todo items"], ["some doing items"], ["some done items"])
 today_mock = dateutil.parser.parse('2020-09-02 00:16:26.061713')
@@ -80,3 +81,6 @@ def test_old_done_items_double(monkeypatch):
     monkeypatch.setattr(ViewModel, 'today', lambda self: today_mock)
     result_list = vm.old_done_items(items)
     assert result_list == [card1, card2]
+
+def test_today():
+    assert vm.today().date() == datetime.today().date()
