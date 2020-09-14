@@ -69,7 +69,6 @@ def get_all_lists_on_board(board_id):
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN')
     }
-    print(requests.request("GET", url, params=query).json())
     return requests.request("GET", url, params=query).json()
 
 
