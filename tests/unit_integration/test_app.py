@@ -29,4 +29,3 @@ def test_index(client, monkeypatch, items):
     response = client.get('/')
     assert response.status_code == 200
     assert response.headers['Content-Type'] == "text/html; charset=utf-8"
-  

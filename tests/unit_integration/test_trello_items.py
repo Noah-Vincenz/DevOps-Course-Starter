@@ -1,6 +1,5 @@
 import pytest
 import trello_items as trello
-from flask import jsonify
 from card import Card
 import os
 import requests

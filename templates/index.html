@@ -26,7 +26,7 @@
           <td>{{ item.description }}</td>
           <td>
             <form action="start/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit" id="start-btn">Start</button>
+              <button class="btn btn-outline-primary start-btn" type="submit">Start</button>
             </form>
           </td>
         </tr>
@@ -50,10 +50,10 @@
           <td>{{ item.description }}</td>
           <td>
             <form style="float: left; margin-right: 5px;" action="stop/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit" id="stop-btn">Stop</button>
+              <button class="btn btn-outline-primary stop-btn" type="submit">Stop</button>
             </form>
             <form action="complete/{{ item.id }}" method="post">
-              <button class="btn btn-outline-primary" type="submit" id="complete-btn">Complete</button>
+              <button class="btn btn-outline-primary complete-btn" type="submit">Complete</button>
             </form>
           </td>
         </tr>
@@ -78,7 +78,7 @@
             <td>{{ item.description }}</td>
             <td>
               <form action="undo/{{ item.id }}" method="post">
-                <button class="btn btn-outline-primary" type="submit" id="undo-btn">Undo</button>
+                <button class="btn btn-outline-primary undo-btn" type="submit">Undo</button>
               </form>
             </td>
           </tr>

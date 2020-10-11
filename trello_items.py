@@ -101,7 +101,7 @@ def create_item(title, description):
         'token': os.getenv('API_TOKEN'),
         'name': title, 
         'desc': description,
-        'idList': os.getenv('TODO_LIST_ID') # this is the id for the 'To Do' list
+        'idList': os.getenv('TODO_LIST_ID')
     }
     response = requests.request("POST", url, params=query)
     return response
@@ -115,7 +115,7 @@ def start_item(item_id):
     query = {
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('DOING_LIST_ID') # this is the id for the 'Doing' list
+        'idList': os.getenv('DOING_LIST_ID')
     }
     return requests.request("PUT", url, params=query)
 
@@ -128,7 +128,7 @@ def complete_item(item_id):
     query = {
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('DONE_LIST_ID') # this is the id for the 'Done' list
+        'idList': os.getenv('DONE_LIST_ID')
     }
     return requests.request("PUT", url, params=query)
 
@@ -141,7 +141,7 @@ def undo_item(item_id):
     query = {
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('DOING_LIST_ID') # this is the id for the 'Doing' list
+        'idList': os.getenv('DOING_LIST_ID')
     }
     return requests.request("PUT", url, params=query)
 
@@ -154,6 +154,6 @@ def stop_item(item_id):
     query = {
         'key': os.getenv('API_KEY'),
         'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('TODO_LIST_ID') # this is the id for the 'To Do' list
+        'idList': os.getenv('TODO_LIST_ID')
     }
     return requests.request("PUT", url, params=query)

@@ -28,7 +28,7 @@ def test_not_same_date(last_modified):
 def test_older_date(last_modified):
     assert vm.older_date(last_modified, today_mock)
 
-@pytest.mark.parametrize("last_modified", ['2020-09-02 12:16:26.061713', '2020-09-02 12:16:26.061713'])
+@pytest.mark.parametrize("last_modified", ['2020-09-02 12:16:26.061713', '2020-09-03 12:16:26.061713'])
 def test_not_older_date(last_modified):
     assert not vm.older_date(last_modified, today_mock)
 
