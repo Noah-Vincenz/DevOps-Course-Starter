@@ -15,14 +15,29 @@ $ source setup.sh --windows
 
 Once the setup script has completed and all packages have been installed, add the following variables to the *.env* file:
 ```
-API_KEY = ... # your trello api key
-API_TOKEN = ... # your trello api token
-TODO_LIST_ID = ... # your 'todo' list id
-DONE_LIST_ID = ... # your 'done' list id
+API_KEY=... # your trello api key
+API_TOKEN=... # your trello api token
+TODO_LIST_ID=... # your 'todo' list id
+DOING_LIST_ID=... # your 'done' list id
+DONE_LIST_ID=... # your 'done' list id
+TRELLO_BOARD_ID=... # your board id
 ```
 Note that *.env* has been added to the gitignore file so that these secrets will not be commited to git.
 
-Following this, start the Flask app by running:
+Following this, you can then run all the test by running:
+```bash
+$ python -m pytest
+```
+or if you want to run the unit and integration tests only:
+```bash
+$ python -m pytest tests/unit_integration
+```
+or if you want to run the end-to-end tests only:
+```bash
+$ python -m pytest tests/e2e
+```
+
+If all tests succeed, start the Flask app by running:
 ```bash
 $ flask run
 ```
@@ -33,7 +48,7 @@ You should see output similar to the following:
  * Environment: development
  * Debug mode: on
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- * Restarting with fsevents reloader
+ * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 226-556-590
 ```
