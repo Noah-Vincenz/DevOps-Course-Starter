@@ -116,3 +116,6 @@ env/
 .env
 
 geckodriver.log
+
+# Vagrant
+.vagrant
