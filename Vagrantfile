@@ -12,6 +12,19 @@ Vagrant.configure("2") do |config|
 		echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
 		echo 'eval "$(pyenv init -)"' >> ~/.profile
 		source ~/.profile
+		pyenv install 3.8.5
+		pyenv global 3.8.5
 		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 	SHELL
+
+	config.trigger.after :up do |trigger|
+		trigger.name = "Launching App"
+		trigger.info = "Running the TODO app setup script"
+		trigger.run_remote = {privileged: false, inline: "
+			# install dependencies and launch
+			cd /vagrant
+			poetry install
+			poetry run flask run
+		"}
+	end
 end
