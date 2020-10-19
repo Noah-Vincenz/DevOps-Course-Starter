@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
 	config.vm.box = "hashicorp/bionic64"
-	config.vm.provision "shell", privileged: false, inline: <<-SHELL
+	config.vm.provision "shell", privileged: true, inline: <<-SHELL
 		sudo apt-get update
 		sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
 		libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
