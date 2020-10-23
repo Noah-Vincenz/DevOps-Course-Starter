@@ -15,7 +15,8 @@ Vagrant.configure("2") do |config|
 		pyenv install 3.8.5
 		pyenv global 3.8.5
 		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-		cp .env.template .env
+		# -n ("no-clobber") to avoid overwriting existing .env file
+		cp -n .env.template .env
 	SHELL
   	config.vm.network "forwarded_port", guest: 5000, host: 5000
 	config.trigger.after :up do |trigger|
