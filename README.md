@@ -1,10 +1,10 @@
 # DevOps Apprenticeship: Project Exercise
 
-## Setup
+## Initial One-time Setup
 
 To setup the application run 
 ```bash
-$ vagrant provision # needed to be run only once for initial setup
+$ vagrant up
 ```
 This will set up the application environment and download required dependencies. A file called `.env` will have been created with the environment variables below. This `.env` file is used by flask to set environment variables. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. Populate the following variables inside the `.env` file with your Trello App API details/credentials:
 ```
@@ -16,6 +16,7 @@ DONE_LIST_ID=... # your 'done' list id
 TRELLO_BOARD_ID=... # your board id
 ```
 Note that *.env* has been added to the gitignore file so that these secrets will not be commited to git.
+Now, our app is ready to be run.
 
 ## Running the tests
 
