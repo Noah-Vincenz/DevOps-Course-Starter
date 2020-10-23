@@ -33,7 +33,11 @@ $ python -m pytest tests/e2e
 ```
 ## Running the app
 
-Once the all dependencies have been installed and all tests succeed, start the Flask app in development mode within the poetry environment inside a VM by running:
+Once the all dependencies have been installed and all tests succeed, start the Flask app in development mode within the poetry environment by running:
+```bash
+$ poetry run flask run
+```
+or you can run the app inside a VM by running:
 ```bash
 $ vagrant up
 ```
