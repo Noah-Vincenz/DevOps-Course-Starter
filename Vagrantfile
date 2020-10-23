@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
 	config.vm.box = "hashicorp/bionic64"
-	config.vm.provision "shell", privileged: true, inline: <<-SHELL
+	config.vm.provision "shell", privileged: false, inline: <<-SHELL
 		sudo apt-get update
 		sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
 		libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
@@ -27,8 +27,8 @@ Vagrant.configure("2") do |config|
 			# install dependencies and launch
 			cd /vagrant
 			poetry install
-			# instead of 'using poetry run flask run --host=0.0.0.0' we want to start it as a separate process (and redirect console output to a file)
-			nohup run flask run --host=0.0.0.0 > logs.txt 2>&1 &
+			# instead of using 'poetry run flask run --host=0.0.0.0' we want to start it as a separate process and redirect console output to a file
+			poetry run flask run --host=0.0.0.0 > logs.txt 2>&1 &
 		"}
 	end
 end
