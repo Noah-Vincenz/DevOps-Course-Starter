@@ -21,15 +21,15 @@ Note that *.env* has been added to the gitignore file so that these secrets will
 
 Following this, you can then run all the test by running:
 ```bash
-$ python -m pytest
+$ poetry run python -m pytest
 ```
 or if you want to run the unit and integration tests only:
 ```bash
-$ python -m pytest tests/unit_integration
+$ poetry run python -m pytest tests/unit_integration
 ```
 or if you want to run the end-to-end tests only:
 ```bash
-$ python -m pytest tests/e2e
+$ poetry run python -m pytest tests/e2e
 ```
 ## Running the app
 

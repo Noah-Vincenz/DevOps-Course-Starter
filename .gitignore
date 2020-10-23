@@ -122,3 +122,5 @@ geckodriver.log
 
 .venv/
 venv
+
+logs.txt

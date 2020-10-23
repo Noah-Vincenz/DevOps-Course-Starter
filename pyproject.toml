@@ -12,7 +12,9 @@ requests = "^2.24.0"
 python-dateutil = "^2.8.1"
 
 [tool.poetry.dev-dependencies]
-poetry add --dev pytest selenium
+pytest = "^6.1.1"
+selenium = "^3.141.0"
+pytest-cov = "^2.10.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
