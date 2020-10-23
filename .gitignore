@@ -121,3 +121,4 @@ geckodriver.log
 .vagrant
 
 .venv/
+venv
