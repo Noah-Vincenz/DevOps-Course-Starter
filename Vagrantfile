@@ -25,7 +25,8 @@ Vagrant.configure("2") do |config|
 			# install dependencies and launch
 			cd /vagrant
 			poetry install
-			poetry run flask run --host=0.0.0.0
+			# instead of 'using poetry run flask run --host=0.0.0.0' we want to start it as a separate process (and redirect console output to a file)
+			nohup run flask run --host=0.0.0.0 > logs.txt 2>&1 &
 		"}
 	end
 end
