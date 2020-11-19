@@ -3,6 +3,7 @@ README.md
 pytest.ini
 geckodriver
 .gitignore
-.env.template
+.git
+.env*
 tests
 Dockerfile.*
