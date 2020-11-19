@@ -6,4 +6,6 @@ geckodriver
 .git
 .env*
 tests
-Dockerfile.*
+Dockerfile*
+run_dev.sh
+run_prod.sh
