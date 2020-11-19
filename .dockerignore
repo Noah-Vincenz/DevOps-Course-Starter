@@ -7,5 +7,3 @@ geckodriver
 .env*
 tests
 Dockerfile*
-run_dev.sh
-run_prod.sh
