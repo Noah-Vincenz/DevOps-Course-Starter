@@ -40,8 +40,8 @@ Firstly, the app can be started in development-mode inside a docker container by
 ```bash
 $ docker-compose up
 ```
-
-Secondly you can run the app in production-mode by running:
+<br />
+Secondly, you can run the app in production-mode by running:
 ```bash
 $ docker build --target production --no-cache --tag todo-app:prod .
 ```
@@ -50,12 +50,12 @@ to build a production-mode docker image from ```Dockerfile```, followed by
 $ docker run --env-file .env -p 5000:5000 --mount type=bind,source="$(pwd)",target=/DevOps-Course-Starter todo-app:prod
 ```
 to run the image in production-mode.
-
+<br />
 Lastly, you can also run the app inside a VM by running:
 ```bash
 $ vagrant up
 ```
-
+<br />
 In any of the above cases, you should see output similar to the following:
 ```bash
  * Serving Flask app "app" (lazy loading)
@@ -66,4 +66,4 @@ In any of the above cases, you should see output similar to the following:
  * Debugger is active!
  * Debugger PIN: 226-556-590
 ```
-Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app running in your VM.
+Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app running.
