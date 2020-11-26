@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    env_file: .env
+    build:
+      context: .
+      target: development
+      dockerfile: Dockerfile
+    image: todo-app/dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - type: bind
+        source: .
+        target: /DevOps-Course-Starter
