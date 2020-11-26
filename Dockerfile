@@ -2,8 +2,8 @@ FROM python:3.8-buster as base
 # Perform common operations, dependency installation etc... 
 RUN pip install poetry
 WORKDIR /DevOps-Course-Starter
-COPY . /DevOps-Course-Starter/
-RUN poetry install 
+COPY . /DevOps-Course-Starter
+RUN poetry install
 
 FROM base as development
 # Configure for local development
