@@ -12,4 +12,5 @@ ENTRYPOINT poetry run flask run --host=0.0.0.0
 FROM base as production
 # Configure for production
 ENV FLASK_ENV=production
+RUN poetry add gunicorn
 ENTRYPOINT poetry run gunicorn "app:create_app()" --bind 0.0.0.0:5000
