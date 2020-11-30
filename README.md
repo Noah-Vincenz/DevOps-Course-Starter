@@ -50,7 +50,7 @@ to build a production-mode docker image from ```Dockerfile```, followed by
 ```bash
 $ docker run --env-file .env -p 5000:5000 --mount type=bind,source="$(pwd)",target=/DevOps-Course-Starter todo-app:prod
 ```
-to run the image in production-mode.
+to run the image in production-mode (Note: the above command is limited to unix shells).
 
 \
 Lastly, you can also run the app inside a VM by running:
