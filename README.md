@@ -1,4 +1,4 @@
-# DevOps Apprenticeship: Project Exercise
+# Todo-App
 
 ## Initial One-time Setup
 
