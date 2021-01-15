@@ -40,11 +40,13 @@ def update_env_vars(board_id):
         else:
             os.environ['DONE_LIST_ID'] = list['id']
 
-
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module') 
 def driver():
-    with webdriver.Firefox() as driver:
-        driver.implicitly_wait(2)
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless') 
+    opts.add_argument('--no-sandbox') 
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome('./chromedriver', options=opts) as driver:
         yield driver
 
 def test_task_journey(driver, test_app): 
