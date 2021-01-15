@@ -47,7 +47,7 @@ to build a test-mode docker image from ```Dockerfile```, followed by
 ```bash
 $ docker run --env API_KEY=<API_KEY> --env API_TOKEN=<API_TOKEN> --env TODO_LIST_ID=<TODO_LIST_ID> --env DOING_LIST_ID=<DOING_LIST_ID> --env DONE_LIST_ID=<DONE_LIST_ID> --env TRELLO_BOARD_ID=<TRELLO_BOARD_ID> --env SECRET_KEY=<SECRET_KEY> todo-app:tests tests
 ```
-to run all the tests in ```tests/``` by running the image. (Note: input your environment variables)
+to run all the tests in ```tests/``` by running the image. (Note: input the values for the environment variables)
 
 ## Running the app
 
