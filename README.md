@@ -30,13 +30,13 @@ $ poetry install
 $ export PYTHONPATH=.
 ```
 to install all dependencies from ```pyproject.toml``` and set the python path in the project environment. 
-And then run:
+And then run (```-s``` flag to allow printing as part of tests):
 ```bash
-$ poetry run pytest tests/unit
+$ poetry run pytest -s tests/unit
 ```
 to run the project's unit tests and
 ```bash
-$ poetry run pytest tests/integration
+$ poetry run pytest -s tests/integration
 ```
 to run the project's integration tests only.
 
