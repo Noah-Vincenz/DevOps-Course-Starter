@@ -2,7 +2,7 @@
 
 ## CI Builds
 
-To view the application CI builds in Travis-CI visit: https://travis-ci.com/github/Noah-Vincenz/DevOps-Course-Starter/builds.
+To view the application CI builds in Travis-CI visit: [https://travis-ci.com/github/Noah-Vincenz/DevOps-Course-Starter/builds](https://travis-ci.com/github/Noah-Vincenz/DevOps-Course-Starter/builds).
 
 ## Initial One-time Setup
 
