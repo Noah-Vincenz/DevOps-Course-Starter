@@ -40,6 +40,7 @@ def update_env_vars(board_id):
         else:
             os.environ['DONE_LIST_ID'] = list['id']
 
+# THIS IS USED TO RUN THE E2E TESTS IN DOCKER CONTAINER
 @pytest.fixture(scope='module') 
 def driver():
     opts = webdriver.ChromeOptions()
@@ -48,12 +49,17 @@ def driver():
     with webdriver.Chrome('./chromedriver', options=opts) as driver:
         yield driver
 
+# UNCOMMENT THIS TO RUN THE E2E TESTS LOCALLY - COMMENT THE ABOVE
+# @pytest.fixture(scope='module') 
+# def driver():
+#     with webdriver.Firefox() as driver:
+#         driver.implicitly_wait(2)
+#         yield driver
+
 def test_task_journey(driver, test_app): 
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
     #Create new item
-    els = driver.find_elements_by_tag_name("td")
-    assert len(els) == 0
     driver.find_element_by_id("title-input").send_keys("Clean room")
     driver.find_element_by_id("description-input").send_keys("Tidy room and wipe desk")
     driver.find_element_by_id("create-btn").click()

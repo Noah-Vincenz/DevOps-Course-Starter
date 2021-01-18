@@ -1,5 +1,9 @@
 # Todo-App
 
+## CI Builds
+
+To view the application CI builds in Travis-CI visit: https://travis-ci.com/github/Noah-Vincenz/DevOps-Course-Starter/builds.
+
 ## Initial One-time Setup
 
 To setup the application run 
@@ -26,18 +30,15 @@ $ poetry install
 $ export PYTHONPATH=.
 ```
 to install all dependencies from ```pyproject.toml``` and set the python path in the project environment. 
-And then to run all the tests:
+And then run:
 ```bash
-$ poetry run pytest
+$ poetry run pytest tests/unit
 ```
-or if you want to run the unit and integration tests only:
+to run the project's unit tests and
 ```bash
-$ poetry run pytest tests/unit_integration
+$ poetry run pytest tests/integration
 ```
-or if you want to run the end-to-end tests only:
-```bash
-$ poetry run pytest tests/e2e
-```
+to run the project's integration tests only.
 
 \
 Alternatively, you can run the tests in a Docker container by running:
@@ -57,7 +58,7 @@ There are multiple ways to start the app.
 ### Inside Docker Container
 Firstly, the app can be started in development-mode inside a docker container by running:
 ```bash
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 \

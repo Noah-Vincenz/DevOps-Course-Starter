@@ -1,6 +1,7 @@
 script:
   - docker build --no-cache --target test --tag todo-app:tests .
-  - docker run todo-app:tests tests/unit_integration
+  - docker run todo-app:tests tests/unit
+  - docker run todo-app:tests tests/integration
   - docker run -e SECRET_KEY -e API_KEY -e API_TOKEN -e TODO_LIST_ID -e DOING_LIST_ID -e DONE_LIST_ID -e TRELLO_BOARD_ID todo-app:tests tests/e2e
 env:
   global:
