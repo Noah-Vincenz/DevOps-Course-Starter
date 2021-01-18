@@ -23,19 +23,20 @@ Now, our app is ready to be tested (see _Running the tests_) and/or run (see _Ru
 Following this, in order to be able to run the tests, first run:
 ```bash
 $ poetry install
+$ export PYTHONPATH=.
 ```
-to install all dependencies from ```pyproject.toml```. 
+to install all dependencies from ```pyproject.toml``` and set the python path in the project environment. 
 And then to run all the tests:
 ```bash
-$ poetry run python -m pytest
+$ poetry run pytest
 ```
 or if you want to run the unit and integration tests only:
 ```bash
-$ poetry run python -m pytest tests/unit_integration
+$ poetry run pytest tests/unit_integration
 ```
 or if you want to run the end-to-end tests only:
 ```bash
-$ poetry run python -m pytest tests/e2e
+$ poetry run pytest tests/e2e
 ```
 
 \
