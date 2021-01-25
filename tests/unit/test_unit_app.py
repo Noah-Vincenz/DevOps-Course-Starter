@@ -7,7 +7,7 @@ from card import Card
 @pytest.fixture
 def client():
     # Use our test integration config instead of the 'real' version 
-    file_path = find_dotenv('/DevOps-Course-Starter/tests/.env.test')
+    file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
     # Create the new app.
     test_app = create_app()
