@@ -1,10 +1,8 @@
 Vagrantfile
 README.md
-pytest.ini
 geckodriver
 .gitignore
 .git
-.env*
-tests
+.env
 Dockerfile*
 env
