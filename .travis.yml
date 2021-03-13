@@ -1,5 +1,5 @@
 script:
-  - docker login --username USERNAME --password PASSWORD
+  - docker login --username -e USERNAME --password -e PASSWORD
   - docker build --no-cache --target test --tag todo-app:tests .
   - docker run todo-app:tests tests/unit
   - docker run todo-app:tests tests/integration
