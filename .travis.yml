@@ -1,18 +1,18 @@
 script:
-  - docker login --username $USERNAME --password $PASSWORD
-  - docker build --no-cache --target test --tag todo-app:tests .
-  - docker run todo-app:tests tests/unit
-  - docker run todo-app:tests tests/integration
-  - docker run -e SECRET_KEY -e API_KEY -e API_TOKEN -e TODO_LIST_ID -e DOING_LIST_ID -e DONE_LIST_ID -e TRELLO_BOARD_ID todo-app:tests tests/e2e
-  - docker build --no-cache --target production --tag $USERNAME/todo-app:$TRAVIS_COMMIT .
-  - docker push $USERNAME/todo-app:$TRAVIS_COMMIT
-  - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
-  - docker push $USERNAME/todo-app:latest
-  - docker tag $USERNAME/todo-app:latest registry.heroku.com/devops-project-exercise-8/web
-  - heroku login
-  - heroku container:login
-  - docker push registry.heroku.com/devops-project-exercise-8/web
-  - heroku container:release web
+- docker login --username $USERNAME --password $PASSWORD
+- docker build --no-cache --target test --tag todo-app:tests .
+- docker run todo-app:tests tests/unit
+- docker run todo-app:tests tests/integration
+- docker run -e SECRET_KEY -e API_KEY -e API_TOKEN -e TODO_LIST_ID -e DOING_LIST_ID -e DONE_LIST_ID -e TRELLO_BOARD_ID todo-app:tests tests/e2e
+- docker build --no-cache --target production --tag $USERNAME/todo-app:$TRAVIS_COMMIT .
+- docker push $USERNAME/todo-app:$TRAVIS_COMMIT
+- docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
+- docker push $USERNAME/todo-app:latest
+deploy:
+  provider: heroku
+  api_key:
+    secure: UzrqxLRHZVkAeNyXLDyITqUDmw5qcdFqnN8KkpRso8L9kLwJBlXj6UpElDaJvruRX1otr/M2q9E7h/CKZku7DuMfhN5nSMuSO+NoMFCoFlZMPojTNEkmXNK1yskjrq4r5nBb9yhnOAEFMuTp17BU2ZXRiGnV4RogaEIeTTfBtflpadkhPMrY4oU2lEpkqONVf9XFVIe71E/+904Z8eDodOQj56NHM/wLRZwyU9vhA6vfd1iGl3+O8vF7rJBkWmNtAW7gEyAK9WRwriKCYnQ9VFPJnHlAXEie6nPrj6aO1IOu+eFYk53zOM9i4Qa7/XswPRofNSJ2lK9QUKQg9cXcwnNH60KSPyXv+98f2hhVOwAHahjrs2BPIDbhGSj9g13sfXE7EOHrwRokXpgutlqJ4z6zHNBa5Hlb2WdGktJuCyCpiiqIlNaAQeVEOg4iF1dWTDfEbNs8lVeetUHfhj7reMA8Shxj0kHFxDKrt97bsGFid5icZTpRc4a/VtG57Syq4GamPgQNS+D9hH6tKqVNFN6AM/BbYXTCbl58wOzt9pedkyRRDDFHHQTm29CRZfyznHF5Ho6eei3A8wvvO0nW7qgvNyKrevCZRzoYqgT5NXnm32N2eUhzaIIpM9Bl2RWI0wdSpdelw5HwBfGiZzyvBikyhTk1AXkwqJsKMAU8FJs=
+  app: devops-project-exercise-8
 env:
   global:
   - secure: aB56h8RWE1VVAM03XSANICwq2AR1Rn3Wuox7yjtD7xSgdn5pTY6UMSpJZqvbYmWaUbz0MyAwEkESNIaus8vooOMj0i2NM1m16XNbx1EVU/YgV4ypslLxPPJ1FRYLxx02/m1/rpIlAXVgTwYNKKpPDyofB0Oil4J9GTIUAE7wDloZbCzalA2h54BEuOSWbOk4UXLsBAtxMEWc7DopdYZCLdOlol925sHVYOmr9e/SicK5bFVGuOjNwQOYvlqW326oSOFXMj8s7Yp06nGnMrcHlU04NihHlD8gMt8K0NprWaX5sMkdoUFunLCqMua8WvDlIdN5v6Pd2w31kia42XEvTUKQNRtw5D92fDBAA6A0sjQClWWDf5l0ypp3T1UV0xhcNYI53nlP9cCegxD0OPxxQN9xDVr9yAUl8dRFYiFCDH31xazhACjxYdmyeSiyfG+tmav3vYR45bFdi9kx30uCbjBpjXpbu0D9gpPgiv07/Q4duQV1w72cXVzMuJouX2wwiKsA06/nht+hT9VKT2b4ack9/1ssmsKf7SA82fDpJphlAjj6X93lD5FtsUB3xDIcR1IpT1dzzbWzzFEzNxMAvVPWDQAUD2XFFprfV2bXNDH0Ths3CKqWpBJlbY/7AzVHELXpM7Ms4YXGx953U3T0ikd89t0onrDdsaUJ5wC/sXA=
