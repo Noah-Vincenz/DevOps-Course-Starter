@@ -29,4 +29,5 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     && apt-get install unzip -y \
     && unzip ./chromedriver_linux64.zip
 ENV PYTHONPATH=.
+ENV PORT=5000
 ENTRYPOINT ["poetry", "run", "pytest", "-s"]
