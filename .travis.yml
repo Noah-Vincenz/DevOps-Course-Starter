@@ -9,10 +9,12 @@ script:
 - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
 - docker push $USERNAME/todo-app:latest
 deploy:
-  provider: heroku
-  api_key:
-    secure: UzrqxLRHZVkAeNyXLDyITqUDmw5qcdFqnN8KkpRso8L9kLwJBlXj6UpElDaJvruRX1otr/M2q9E7h/CKZku7DuMfhN5nSMuSO+NoMFCoFlZMPojTNEkmXNK1yskjrq4r5nBb9yhnOAEFMuTp17BU2ZXRiGnV4RogaEIeTTfBtflpadkhPMrY4oU2lEpkqONVf9XFVIe71E/+904Z8eDodOQj56NHM/wLRZwyU9vhA6vfd1iGl3+O8vF7rJBkWmNtAW7gEyAK9WRwriKCYnQ9VFPJnHlAXEie6nPrj6aO1IOu+eFYk53zOM9i4Qa7/XswPRofNSJ2lK9QUKQg9cXcwnNH60KSPyXv+98f2hhVOwAHahjrs2BPIDbhGSj9g13sfXE7EOHrwRokXpgutlqJ4z6zHNBa5Hlb2WdGktJuCyCpiiqIlNaAQeVEOg4iF1dWTDfEbNs8lVeetUHfhj7reMA8Shxj0kHFxDKrt97bsGFid5icZTpRc4a/VtG57Syq4GamPgQNS+D9hH6tKqVNFN6AM/BbYXTCbl58wOzt9pedkyRRDDFHHQTm29CRZfyznHF5Ho6eei3A8wvvO0nW7qgvNyKrevCZRzoYqgT5NXnm32N2eUhzaIIpM9Bl2RWI0wdSpdelw5HwBfGiZzyvBikyhTk1AXkwqJsKMAU8FJs=
-  app: devops-project-exercise-8
+  provider: script
+  script: 
+  - echo $HEROKU_API_KEY | docker login --username $USERNAME --password-stdin registry.heroku.com
+  - docker tag $USERNAME/todo-app:latest registry.heroku.com/devops-project-exercise-8/web
+  - docker push registry.heroku.com/devops-project-exercise-8/web
+  - heroku container:release web
   on:
     all_branches: true
 env:
