@@ -12,8 +12,9 @@ ENTRYPOINT poetry run flask run --host=0.0.0.0
 FROM base as production
 # Configure for production
 ENV FLASK_ENV=production
+ENV PORT=5000
 RUN poetry add gunicorn
-ENTRYPOINT poetry run gunicorn "app:create_app()" --bind 0.0.0.0:5000
+ENTRYPOINT poetry run gunicorn "app:create_app()" --bind 0.0.0.0:${PORT}
 
 FROM base as test
 # Configure for testing
@@ -29,5 +30,4 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     && apt-get install unzip -y \
     && unzip ./chromedriver_linux64.zip
 ENV PYTHONPATH=.
-ENV PORT=5000
 ENTRYPOINT ["poetry", "run", "pytest", "-s"]
