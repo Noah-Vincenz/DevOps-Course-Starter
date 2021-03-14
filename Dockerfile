@@ -14,7 +14,7 @@ FROM base as production
 ENV FLASK_ENV=production
 RUN poetry add gunicorn
 # PORT env variable is set by Heroku
-ENTRYPOINT poetry run gunicorn "app:create_app()" --bind 0.0.0.0:${PORT}
+ENTRYPOINT poetry run gunicorn "app:create_app()" --bind 0.0.0.0:$PORT
 
 FROM base as test
 # Configure for testing

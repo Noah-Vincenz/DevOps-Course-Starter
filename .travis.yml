@@ -9,6 +9,8 @@ script:
   - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
   - docker push $USERNAME/todo-app:latest
   - docker tag $USERNAME/todo-app:latest registry.heroku.com/devops-project-exercise-8/web
+  - heroku login
+  - heroku container:login
   - docker push registry.heroku.com/devops-project-exercise-8/web
   - heroku container:release web
 env:
