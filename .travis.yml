@@ -9,6 +9,7 @@ script:
 - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
 - docker push $USERNAME/todo-app:latest
 deploy:
+  skip_cleanup: true
   provider: script
   script: 
   - echo $HEROKU_API_KEY | docker login --username $USERNAME --password-stdin registry.heroku.com
