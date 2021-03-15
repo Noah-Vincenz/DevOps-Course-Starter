@@ -8,14 +8,10 @@ script:
 - docker push $USERNAME/todo-app:$TRAVIS_COMMIT
 - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
 - docker push $USERNAME/todo-app:latest
-- echo $HEROKU_API_KEY | docker login --username $USERNAME --password-stdin registry.heroku.com
-- docker tag $USERNAME/todo-app:latest registry.heroku.com/devops-project-exercise-8/web
-- docker push registry.heroku.com/devops-project-exercise-8/web
 deploy: 
   skip_cleanup: true
   provider: script
-  script: 
-  - heroku container:release web
+  script: bash scripts/deploy.sh
   app: devops-project-exercise-8
   on:
     all_branches: true
