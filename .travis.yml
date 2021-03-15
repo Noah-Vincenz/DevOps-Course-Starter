@@ -12,7 +12,6 @@ deploy:
   skip_cleanup: true
   provider: script
   script: bash scripts/deploy.sh
-  app: devops-project-exercise-8
   on:
     all_branches: true
 env:
