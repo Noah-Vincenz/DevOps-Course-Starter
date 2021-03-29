@@ -1,8 +1,18 @@
 script:
-  - docker build --no-cache --target test --tag todo-app:tests .
-  - docker run todo-app:tests tests/unit
-  - docker run todo-app:tests tests/integration
-  - docker run -e SECRET_KEY -e API_KEY -e API_TOKEN -e TODO_LIST_ID -e DOING_LIST_ID -e DONE_LIST_ID -e TRELLO_BOARD_ID todo-app:tests tests/e2e
+- echo $PASSWORD | docker login --username $USERNAME --password-stdin
+- docker build --no-cache --target test --tag todo-app:tests .
+- docker run todo-app:tests tests/unit
+- docker run todo-app:tests tests/integration
+- docker run -e SECRET_KEY -e API_KEY -e API_TOKEN todo-app:tests tests/e2e
+- docker build --no-cache --target production --tag $USERNAME/todo-app:$TRAVIS_COMMIT .
+- docker push $USERNAME/todo-app:$TRAVIS_COMMIT
+- docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
+- docker push $USERNAME/todo-app:latest
+deploy: 
+  skip_cleanup: true
+  provider: script
+  script: bash scripts/deploy.sh
+  on: master
 env:
   global:
   - secure: aB56h8RWE1VVAM03XSANICwq2AR1Rn3Wuox7yjtD7xSgdn5pTY6UMSpJZqvbYmWaUbz0MyAwEkESNIaus8vooOMj0i2NM1m16XNbx1EVU/YgV4ypslLxPPJ1FRYLxx02/m1/rpIlAXVgTwYNKKpPDyofB0Oil4J9GTIUAE7wDloZbCzalA2h54BEuOSWbOk4UXLsBAtxMEWc7DopdYZCLdOlol925sHVYOmr9e/SicK5bFVGuOjNwQOYvlqW326oSOFXMj8s7Yp06nGnMrcHlU04NihHlD8gMt8K0NprWaX5sMkdoUFunLCqMua8WvDlIdN5v6Pd2w31kia42XEvTUKQNRtw5D92fDBAA6A0sjQClWWDf5l0ypp3T1UV0xhcNYI53nlP9cCegxD0OPxxQN9xDVr9yAUl8dRFYiFCDH31xazhACjxYdmyeSiyfG+tmav3vYR45bFdi9kx30uCbjBpjXpbu0D9gpPgiv07/Q4duQV1w72cXVzMuJouX2wwiKsA06/nht+hT9VKT2b4ack9/1ssmsKf7SA82fDpJphlAjj6X93lD5FtsUB3xDIcR1IpT1dzzbWzzFEzNxMAvVPWDQAUD2XFFprfV2bXNDH0Ths3CKqWpBJlbY/7AzVHELXpM7Ms4YXGx953U3T0ikd89t0onrDdsaUJ5wC/sXA=
