@@ -6,7 +6,7 @@ import sys
 
 def get_items(collection):
     """
-    Fetches all cards from our Trello board.
+    Fetches all cards from mongoDB collection.
 
     Returns:
         list: The nested list of cards containing all cards constructed using the Card class.
@@ -15,10 +15,8 @@ def get_items(collection):
     doing_cards = []
     done_cards = []
     board_id = os.getenv('BOARD_ID')
-    board = collection.find_one({"board_id": "5f297733b15e708b16d0b400"})
-    # print(board, file=sys.stderr)
-    lists = board['lists']
-    for list_elem in lists:
+    board = collection.find_one({'board_id': '5f297733b15e708b16d0b400'})
+    for list_elem in board['lists']:
         for card in list_elem['cards']:
             list_name = list_elem['name']
             new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
@@ -28,33 +26,7 @@ def get_items(collection):
                 doing_cards.append(new_card)
             else:
                 done_cards.append(new_card)
-    # print(board['lists'], file=sys.stderr)
-    # cards = get_cards_from_board(board_id)
-    # for card in cards:
-    #     list_name = get_list_name(card['id'])
-    #     new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
-    #     if list_name == "To Do":
-    #         todo_cards.append(new_card)
-    #     elif list_name == "Doing":
-    #         doing_cards.append(new_card)
-    #     else:
-    #         done_cards.append(new_card)
     return [todo_cards, doing_cards, done_cards]
-
-
-def get_cards_from_board(board_id):
-    """
-    Fetches all cards from a specific Trello board.
-
-    Returns:
-        list: The list of cards.
-    """
-    url = "https://api.trello.com/1/boards/{}/cards".format(board_id)
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN')
-    }
-    return requests.request("GET", url, params=query).json()
 
 
 def get_all_boards():
