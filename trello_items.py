@@ -2,8 +2,9 @@ from flask import session
 import requests
 import os
 from card import Card
+import sys
 
-def get_items():
+def get_items(collection):
     """
     Fetches all cards from our Trello board.
 
@@ -13,17 +14,31 @@ def get_items():
     todo_cards = []
     doing_cards = []
     done_cards = []
-    board_id = os.getenv('TRELLO_BOARD_ID')
-    cards = get_cards_from_board(board_id)
-    for card in cards:
-        list_name = get_list_name(card['id'])
-        new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
-        if list_name == "To Do":
-            todo_cards.append(new_card)
-        elif list_name == "Doing":
-            doing_cards.append(new_card)
-        else:
-            done_cards.append(new_card)
+    board_id = os.getenv('BOARD_ID')
+    board = collection.find_one({"board_id": "5f297733b15e708b16d0b400"})
+    # print(board, file=sys.stderr)
+    lists = board['lists']
+    for list_elem in lists:
+        for card in list_elem['cards']:
+            list_name = list_elem['name']
+            new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
+            if list_name == "todo":
+                todo_cards.append(new_card)
+            elif list_name == "doing":
+                doing_cards.append(new_card)
+            else:
+                done_cards.append(new_card)
+    # print(board['lists'], file=sys.stderr)
+    # cards = get_cards_from_board(board_id)
+    # for card in cards:
+    #     list_name = get_list_name(card['id'])
+    #     new_card = Card(card['id'], card['name'], card['desc'], list_name, card['dateLastActivity'])
+    #     if list_name == "To Do":
+    #         todo_cards.append(new_card)
+    #     elif list_name == "Doing":
+    #         doing_cards.append(new_card)
+    #     else:
+    #         done_cards.append(new_card)
     return [todo_cards, doing_cards, done_cards]
 
 

@@ -1,14 +1,25 @@
 from flask import Flask, render_template, request, redirect, url_for
 import trello_items as trello
 from viewmodel import ViewModel
+import pymongo
+import certifi
+import os
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object('flask_config.Config')
+    dbUsername = os.getenv('MONGO_USERNAME')
+    dbPassword = os.getenv('MONGO_PW')
+    client = pymongo.MongoClient(
+        "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(dbUsername, dbPassword), 
+        tlsCAFile=certifi.where()
+    )
+    db = client.todoDB
+    collection = db.todos
 
     @app.route('/')
     def index():
-        items = trello.get_items()
+        items = trello.get_items(collection)
         item_view_model = ViewModel(items[0], items[1], items[2])
         return render_template('index.html', view_model=item_view_model)
 
@@ -16,27 +27,27 @@ def create_app():
     def add():
         name = request.form.get('new_item_name')
         description = request.form.get('new_item_description')
-        trello.create_item(name, description)
+        trello.create_item(collection, name, description)
         return redirect(url_for('index'))
 
     @app.route('/start/<item_id>', methods=['POST'])
     def start_item(item_id):
-        trello.start_item(item_id)
+        trello.start_item(collection, item_id)
         return redirect(url_for('index'))
 
     @app.route('/complete/<item_id>', methods=['POST'])
     def complete_item(item_id):
-        trello.complete_item(item_id)
+        trello.complete_item(collection, item_id)
         return redirect(url_for('index'))
 
     @app.route('/undo/<item_id>', methods=['POST'])
     def undo_item(item_id):
-        trello.undo_item(item_id)
+        trello.undo_item(collection, item_id)
         return redirect(url_for('index'))
 
     @app.route('/stop/<item_id>', methods=['POST'])
     def stop_item(item_id):
-        trello.stop_item(item_id)
+        trello.stop_item(collection, item_id)
         return redirect(url_for('index'))
 
     return app
