@@ -39,14 +39,7 @@ def get_board(collection, board_id):
     return collection.find_one({ 'board_id': board_id })
 
 
-def create_item(collection, board_id, title, description):
-    """
-    Creates a card in the TO DO list of the board.
-    """
-    insert(collection, board_id, 0, str(uuid.uuid4()), title, description)
-
-
-def insert(collection, board_id, list_index, card_id, title, description):
+def insert(collection, board_id, list_index, item_id, title, description):
     """
     Creates a card in the TO DO list of the board.
     """
@@ -54,7 +47,7 @@ def insert(collection, board_id, list_index, card_id, title, description):
         { 'board_id': board_id },
         { '$push': {
             'lists.{}.cards'.format(list_index): {
-                'card_id': card_id,
+                'card_id': item_id,
                 'name': title,
                 'desc': description,
                 'dateLastActivity': str(date.today())
@@ -63,16 +56,27 @@ def insert(collection, board_id, list_index, card_id, title, description):
     )
 
 
-def get_item(collection, item_id):
+def delete(collection, board_id, list_index, item_id):
     """
-    Fetches a given item by id from the DB.
-
-    Returns:
-        item: The item with the given id.
+    Creates a card in the TO DO list of the board.
     """
-    return collection.find_one({ 'lists.cards.card_id': item_id })
+    collection.update(
+        { 'board_id': board_id },
+        { '$pull': {
+            'lists.{}.cards'.format(list_index): {
+                'card_id': item_id
+            }
+        }}
+    )
 
 
+def create_item(collection, board_id, title, description):
+    """
+    Creates a card in the TO DO list of the board.
+    """
+    insert(collection, board_id, 0, str(uuid.uuid4()), title, description)
+
+    
 def start_item(collection, board_id, item_id):
     """
     Moves a card to the 'DOING' list of the board.
@@ -83,14 +87,7 @@ def start_item(collection, board_id, item_id):
     filtered_list = [x for x in todo_cards if x['card_id'] == item_id]
     item = filtered_list[0]
     # remove item from todo list
-    collection.update(
-        { 'board_id': board_id },
-        { '$pull': {
-            'lists.0.cards': {
-                'card_id': item_id
-            }
-        }}
-    )
+    delete(collection, board_id, 0, item_id)
     # insert item in doing list
     insert(collection, board_id, 1, item_id, item['name'], item['desc'])
 
@@ -99,36 +96,43 @@ def complete_item(collection, board_id, item_id):
     """
     Moves a card to the 'DONE' list of the board.
     """
-    url = "https://api.trello.com/1/cards/{}".format(item_id)
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('DONE_LIST_ID')
-    }
-    return requests.request("PUT", url, params=query)
+    # get doing items
+    doing_cards = get_board(collection, board_id)['lists'][1]['cards']
+    # filter with list comprehension
+    filtered_list = [x for x in doing_cards if x['card_id'] == item_id]
+    item = filtered_list[0]
+    # remove item from doing list
+    delete(collection, board_id, 1, item_id)
+    # insert item in done list
+    insert(collection, board_id, 2, item_id, item['name'], item['desc'])
 
 
 def undo_item(collection, board_id, item_id):
     """
     Moves a card to the 'DOING' list of the board.
     """
-    url = "https://api.trello.com/1/cards/{}".format(item_id)
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('DOING_LIST_ID')
-    }
-    return requests.request("PUT", url, params=query)
+    # get done items
+    done_cards = get_board(collection, board_id)['lists'][2]['cards']
+    # filter with list comprehension
+    filtered_list = [x for x in done_cards if x['card_id'] == item_id]
+    item = filtered_list[0]
+    # remove item from done list
+    delete(collection, board_id, 2, item_id)
+    # insert item in doing list
+    insert(collection, board_id, 1, item_id, item['name'], item['desc'])
 
 
 def stop_item(collection, board_id, item_id):
     """
     Moves a card to the 'To Do' list of the board.
     """
-    url = "https://api.trello.com/1/cards/{}".format(item_id)
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN'),
-        'idList': os.getenv('TODO_LIST_ID')
-    }
-    return requests.request("PUT", url, params=query)
+    # get doing items
+    doing_cards = get_board(collection, board_id)['lists'][1]['cards']
+    # filter with list comprehension
+    filtered_list = [x for x in doing_cards if x['card_id'] == item_id]
+    item = filtered_list[0]
+    # remove item from doing list
+    delete(collection, board_id, 1, item_id)
+    # insert item in todo list
+    insert(collection, board_id, 0, item_id, item['name'], item['desc'])
+
