@@ -114,18 +114,3 @@ def test_get_all_boards(monkeypatch):
 
     monkeypatch.setattr(requests, 'request', lambda type, url, params: mocked_requests_get(url, params))
     assert trello.get_all_boards() == MockResponse({"name": "todo list board"}, "200").json_data
-
-
-def test_get_cards_from_board(monkeypatch):
-    def mocked_requests_get(url, params):
-        if url == 'https://api.trello.com/1/boards/1/cards' and 'key' in params and 'token' in params:
-            return MockResponse({"name": "clean room"}, "200")
-        if url == 'https://api.trello.com/1/boards/2/cards' and 'key' in params and 'token' in params:
-            return MockResponse({"name": "tidy room"}, "200")
-        return MockResponse({}, "404")
-
-    monkeypatch.setattr(requests, 'request', lambda type, url, params: mocked_requests_get(url, params))
-    assert trello.get_cards_from_board('1') == MockResponse({"name": "clean room"}, "200").json_data
-    assert trello.get_cards_from_board('2') == MockResponse({"name": "tidy room"}, "200").json_data
-    assert trello.get_cards_from_board('3') == {}
-
