@@ -1,5 +1,8 @@
-import trello_items as trello
+import items as mongoDB
 from card import Card
+import pymongo
+import mongomock
+import uuid
 
 def same_items(arr1, arr2):
     assert len(arr1) == len(arr2)
@@ -28,33 +31,65 @@ def same_items(arr1, arr2):
         assert done_items1[index].description == done_items2[index].description
         assert done_items1[index].last_modified == done_items2[index].last_modified
 
+@mongomock.patch(servers=(('server.example.com', 27017),))
 def test_get_items(monkeypatch):
-    def mock_get_list_name(card_id):
-        if card_id == "1":
-            return "To Do"
-        elif card_id == "2":
-            return "Doing"
-        elif card_id == "3":
-            return "Done"
-
     id1 = '1'
     id2 = '2'
     name1 = 'Clean flat'
     name2 = 'Clean room'
     desc1 = 'You need to clean the entire flat'
     desc2 = 'You need to clean the entire room'
-    date1 = '2020-09-08T10:17:08.247Z'
-    date2 = '2020-09-01T00:00:00'
+    date1 = '2020-09-08'
+    date2 = '2020-09-01'
     card1 = {'id':id1, 'name':name1, 'desc':desc1, 'dateLastActivity':date1}
     card2 = {'id':id2, 'name':name2, 'desc':desc2, 'dateLastActivity':date2}
+
+    def mock_get_board(collection, board_id):
+       return {
+            'board_id': board_id,
+            'lists': [
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'todo',
+                    'cards': [
+                        {
+                            'card_id': id1,
+                            'name': name1,
+                            'desc': desc1,
+                            'dateLastActivity': date1
+                        }
+                    ]
+                },
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'doing',
+                    'cards': [
+                        {
+                            'card_id': id2,
+                            'name': name2,
+                            'desc': desc2,
+                            'dateLastActivity': date2
+                        }
+                    ]
+                },
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'done',
+                    'cards': [
+                    ]
+                }
+            ] 
+        }
     
-    monkeypatch.setattr(trello, 'get_cards_from_board', lambda board_id: [card1, card2])
-    monkeypatch.setattr(trello, 'get_list_name', lambda card_id: mock_get_list_name(card_id))
+    client = pymongo.MongoClient('server.example.com')
+    collection = client.db.collection
+
+    monkeypatch.setattr(mongoDB, 'get_board', lambda collection, board_id: mock_get_board(collection, board_id))
 
     expected_result = [
         [Card(id1, name1, desc1, '', date1)], 
         [Card(id2, name2, desc2, '', date2)], 
         []
     ]
-    actual_result = trello.get_items()
+    actual_result = mongoDB.get_items(collection, 'board1')
     same_items(expected_result, actual_result)

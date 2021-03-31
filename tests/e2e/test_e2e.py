@@ -3,12 +3,13 @@ import os
 from threading import Thread
 import pytest
 import requests
-import trello_items as trello
+import items as mongoDB
 from dotenv import load_dotenv, find_dotenv
 import app
 import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+import uuid
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -16,8 +17,16 @@ def test_app():
     # Use our test e2e config instead of the 'real' version 
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
-    board_id = create_trello_board('Test Board')
-    update_env_vars(board_id)
+    db_username = os.getenv('MONGO_USERNAME')
+    db_password = os.getenv('MONGO_PW')
+    client = pymongo.MongoClient(
+        "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
+        tlsCAFile=certifi.where()
+    )
+    db = client.todoDB
+    collection = db.todos
+    board_id = create_board(collection)
+    update_env_vars(collection, board_id)
     # construct the new application
     application = app.create_app()
     # start the app in its own thread.
@@ -27,11 +36,12 @@ def test_app():
     yield app
     # Tear Down
     thread.join(1) 
-    delete_trello_board(board_id)
+    delete_board(collection, board_id)
 
-def update_env_vars(board_id):
-    os.environ['TRELLO_BOARD_ID'] = board_id
-    lists = trello.get_all_lists_on_board(board_id)
+def update_env_vars(collection, board_id):
+    os.environ['BOARD_ID'] = board_id
+
+    lists = mongoDB.get_board(collection, board_id)
     for list in lists:
         if list['name'] == 'To Do':
             os.environ['TODO_LIST_ID'] = list['id']
@@ -90,30 +100,45 @@ def test_task_journey(driver, test_app):
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
 
 
-def create_trello_board(name):
+def create_board(collection):
     """
-    Creates a new board with given name.
+    Creates a new document representing a board into our collection with given id.
 
     Returns:
-        The id of the newly created board.
+        The id of the newly created document.
     """
-    url = "https://api.trello.com/1/boards"
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN'),
-        'name': name
-    }
-    response = requests.request("POST", url, params=query)
-    return response.json()['id']
+    board_id = str(uuid.uuid4())
+    collection.insert_one(
+        {
+            'board_id': board_id,
+            'lists': [
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'todo',
+                    'cards': [
+                    ]
+                },
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'doing',
+                    'cards': [
+                    ]
+                },
+                {
+                    'list_id': str(uuid.uuid4()),
+                    'name': 'done',
+                    'cards': [
+                    ]
+                }
+            ]
+            
+        }
+    )
+    return board_id
 
 
-def delete_trello_board(board_id):
+def delete_board(collection, board_id):
     """
-    Deletes a board with given id. Returns nothing.
+    Deletes a document representing a board with given id. Returns nothing.
     """
-    url = "https://api.trello.com/1/boards/{}".format(board_id)
-    query = {
-        'key': os.getenv('API_KEY'),
-        'token': os.getenv('API_TOKEN')
-    }
-    requests.request("DELETE", url, params=query)
+    collection.delete_one( { 'board_id': board_id } )
