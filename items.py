@@ -5,6 +5,7 @@ from card import Card
 import sys
 import uuid
 from datetime import date
+from pprint import pprint
 
 def get_items(collection, board_id):
     """
@@ -58,9 +59,9 @@ def insert(collection, board_id, list_index, item_id, title, description):
 
 def delete(collection, board_id, list_index, item_id):
     """
-    Creates a card in the TO DO list of the board.
+    Removes a card from the given list (by index) of the board.
     """
-    collection.update(
+    collection.update_one(
         { 'board_id': board_id },
         { '$pull': {
             'lists.{}.cards'.format(list_index): {
