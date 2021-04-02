@@ -6,43 +6,81 @@ import uuid
 import certifi
 
 def populate_collection(collection):
-    collection.insert_one({
-        'board_id': 'boardId1',
-        'lists': [
-            {
-                'list_id': str(uuid.uuid4()),
-                'name': 'todo',
-                'cards': [
-                    {
-                        'card_id': 'cardId1',
-                        'name': 'name1',
-                        'desc': 'desc1',
-                        'dateLastActivity': 'date1'
-                    }
-                ]
-            },
-            {
-                'list_id': str(uuid.uuid4()),
-                'name': 'doing',
-                'cards': [
-                    {
-                        'card_id': 'cardId2',
-                        'name': 'name2',
-                        'desc': 'desc2',
-                        'dateLastActivity': 'date2'
-                    }
-                ]
-            },
-            {
-                'list_id': str(uuid.uuid4()),
-                'name': 'done',
-                'cards': [
-                ]
-            }
-        ] 
-    })
+    collection.insert_many(
+        {
+            'board_id': 'board_id',
+            'list_id': 'todo_list_id',
+            'list_name': 'todo',
+            'cards': [
+                {
+                    'card_id': 'cardId1',
+                    'card_name': 'name1',
+                    'card_desc': 'desc1',
+                    'card_dateLastActivity': 'date1'
+                }
+            ]
+        },
+        {
+            'board_id': 'board_id',
+            'list_id': 'doing_list_id',
+            'list_name': 'doing',
+            'cards': [
+                {
+                    'card_id': 'cardId2',
+                    'card_name': 'name2',
+                    'card_desc': 'desc2',
+                    'card_dateLastActivity': 'date2'
+                }
+            ]
+        },
+        {
+            'board_id': 'board_id',
+            'list_id': 'done_list_id',
+            'list_name': 'done',
+            'cards': []
+        }
+    )
 
-
+def mock_find_one(object):
+    if object['list_id'] == 'todo_list_id':
+        return {
+            'board_id': 'board_id',
+            'list_id': 'todo_list_id',
+            'list_name': 'todo',
+            'cards': [
+                {
+                    'card_id': 'cardId1',
+                    'card_name': 'name1',
+                    'card_desc': 'desc1',
+                    'card_dateLastActivity': 'date1'
+                }
+            ]
+        }
+    elif object['list_id'] == 'doing_list_id':
+       return {
+            'board_id': 'board_id',
+            'list_id': 'doing_list_id',
+            'list_name': 'doing',
+            'cards': [
+                {
+                    'card_id': 'cardId2',
+                    'card_name': 'name2',
+                    'card_desc': 'desc2',
+                    'card_dateLastActivity': 'date2'
+                }
+            ]
+        }
+    elif (object['list_id'] == 'done_list_id'):
+        return {
+            'board_id': 'board_id',
+            'list_id': 'done_list_id',
+            'list_name': 'done',
+            'cards': []
+        }
+    else:
+        raise Exception('No document found')
+    
+           
 def same_items(arr1, arr2):
     assert len(arr1) == len(arr2)
     todo_items1 = arr1[0]
@@ -70,7 +108,8 @@ def same_items(arr1, arr2):
         assert done_items1[index].description == done_items2[index].description
         assert done_items1[index].last_modified == done_items2[index].last_modified
 
-@mongomock.patch(servers=(('cluster0.huksc.mongodb.net')))
+
+@mongomock.patch(servers=(('server.example.com', 27017),))
 def test_get_items(monkeypatch):
     id1 = '1'
     id2 = '2'
@@ -80,57 +119,20 @@ def test_get_items(monkeypatch):
     desc2 = 'You need to clean the entire room'
     date1 = '2020-09-08'
     date2 = '2020-09-01'
-    card1 = {'id':id1, 'name':name1, 'desc':desc1, 'dateLastActivity':date1}
-    card2 = {'id':id2, 'name':name2, 'desc':desc2, 'dateLastActivity':date2}
-
-    def mock_get_board(collection, board_id):
-       return {
-            'board_id': board_id,
-            'lists': [
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'todo',
-                    'cards': [
-                        {
-                            'card_id': id1,
-                            'name': name1,
-                            'desc': desc1,
-                            'dateLastActivity': date1
-                        }
-                    ]
-                },
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'doing',
-                    'cards': [
-                        {
-                            'card_id': id2,
-                            'name': name2,
-                            'desc': desc2,
-                            'dateLastActivity': date2
-                        }
-                    ]
-                },
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'done',
-                    'cards': [
-                    ]
-                }
-            ] 
-        }
+    card1 = {'card_id': id1, 'card_name': name1, 'card_desc': desc1, 'card_dateLastActivity': date1}
+    card2 = {'card_id': id2, 'card_name': name2, 'card_desc': desc2, 'card_dateLastActivity': date2}
     
-    client = pymongo.MongoClient('cluster0.huksc.mongodb.net')
+    client = pymongo.MongoClient('server.example.com')
     collection = client.db.collection
 
-    monkeypatch.setattr(mongoDB, 'get_board', lambda collection, board_id: mock_get_board(collection, board_id))
+    monkeypatch.setattr(collection, 'find_one', lambda object: mock_find_one(object))
 
     expected_result = [
-        [Card(id1, name1, desc1, '', date1)], 
-        [Card(id2, name2, desc2, '', date2)], 
+        [Card(id1, name1, desc1, 'todo', date1)], 
+        [Card(id2, name2, desc2, 'doing', date2)], 
         []
     ]
-    actual_result = mongoDB.get_items(collection, 'board1')
+    actual_result = mongoDB.get_items(collection)
     same_items(expected_result, actual_result)
 
 
