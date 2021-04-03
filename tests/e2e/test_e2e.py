@@ -12,6 +12,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import uuid
 import pymongo
 import certifi
+import socket
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -27,6 +28,8 @@ def test_app():
     )
     db = client.todoDB
     collection = db.todos
+    print(socket.gethostbyname(socket.gethostname()))
+    print(socket.getfqdn())
     board_id = create_board(collection)
     # construct the new application
     application = app.create_app()
@@ -91,10 +94,10 @@ def test_task_journey(driver, test_app):
 
 def create_board(collection):
     """
-    Creates a new document representing a board into our collection with given id.
+    Creates a new board id and documents representing our lists and inserts these into our collection.
 
     Returns:
-        The id of the newly created document.
+        The id of the newly created board.
     """
     board_id = str(uuid.uuid4())
     collection.insert_one(

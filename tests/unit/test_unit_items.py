@@ -99,32 +99,4 @@ def test_get_items(monkeypatch):
     ]
     actual_result = mongoDB.get_items(collection, 'board_id')
     same_items(expected_result, actual_result)
-
-
-# @mongomock.patch(servers=(('cluster0.huksc.mongodb.net')))
-# def test_insert(monkeypatch):
-#     client = pymongo.MongoClient('cluster0.huksc.mongodb.net')
-#     collection = client.db.collection
-#     populate_collection(collection)
-
-#     mongoDB.insert(collection, 'boardId1', 1, 'cardId3', 'title3', 'description3')
-#     board_lists = collection.find_one({ 'board_id': 'boardId1' })['lists']
-#     assert len(board_lists[0]['cards']) == 1
-#     assert len(board_lists[1]['cards']) == 2
-#     assert len(board_lists[2]['cards']) == 0
-
-
-# @mongomock.patch(servers=(('cluster0.huksc.mongodb.net')))
-# def test_delete(monkeypatch):
-#     db_username = 'nnoeh'
-#     db_password = 'nnoehPassword1996'
-#     client = pymongo.MongoClient('cluster0.huksc.mongodb.net')
-#     collection = client.db.collection
-#     populate_collection(collection)
-
-#     mongoDB.delete(collection, 'boardId1', 1, 'cardId2')
-#     board_lists = collection.find_one({ 'board_id': 'boardId1' })['lists']
-#     print(board_lists)
-#     assert len(board_lists[0]['cards']) == 1
-#     assert len(board_lists[1]['cards']) == 0
-#     assert len(board_lists[2]['cards']) == 0
+    
