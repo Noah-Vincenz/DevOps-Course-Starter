@@ -12,10 +12,6 @@ def create_app():
     board_id = os.getenv('BOARD_ID')
     db_username = os.getenv('MONGO_USERNAME')
     db_password = os.getenv('MONGO_PW')
-    print('db_username')
-    print(db_username)
-    print('db_password')
-    print(db_password)
     client = pymongo.MongoClient(
         "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
         tlsCAFile=certifi.where()
