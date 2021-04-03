@@ -12,7 +12,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 import uuid
 import pymongo
 import certifi
-import socket
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -20,19 +19,15 @@ def test_app():
     # Use our test e2e config instead of the 'real' version 
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
-    db_username = os.getenv('MONGO_USERNAME')
-    db_password = os.getenv('MONGO_PW')
-    client = pymongo.MongoClient(
-        "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
-        tlsCAFile=certifi.where()
-    )
-    db = client.todoDB
-    collection = db.todos
-    print(socket.gethostbyname(socket.gethostname()))
-    print(socket.getfqdn())
-    board_id = create_board(collection)
+    # db_username = os.getenv('MONGO_USERNAME')
+    # db_password = os.getenv('MONGO_PW')
+    # client = pymongo.MongoClient(
+    #     "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
+    #     tlsCAFile=certifi.where()
+    # )
     # construct the new application
-    application = app.create_app()
+    application, collection = app.create_app()
+    board_id = create_board(collection)
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False)) 
     thread.daemon = True
