@@ -3,7 +3,7 @@ script:
 - docker build --no-cache --target test --tag todo-app:tests .
 - docker run todo-app:tests tests/unit
 - docker run todo-app:tests tests/integration
-- docker run -e SECRET_KEY -e MONGO_USERNAME -e MONGO_PASSWORD todo-app:tests tests/e2e
+- docker run -e SECRET_KEY -e MONGO_USERNAME -e MONGO_PW todo-app:tests tests/e2e
 - docker build --no-cache --target production --tag $USERNAME/todo-app:$TRAVIS_COMMIT .
 - docker push $USERNAME/todo-app:$TRAVIS_COMMIT
 - docker build --no-cache --target production --tag $USERNAME/todo-app:latest .
