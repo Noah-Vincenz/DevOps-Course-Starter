@@ -6,20 +6,6 @@ import certifi
 import os
 
 
-# def create_app(db_uri):
-#     app = Flask(__name__)
-#     app.config["MONGO_URI"] = db_uri
-#     src.database.mongo.init_app(app)
-
-#     # Add the articles collection if it doesn't already exist
-#     if not 'todos' in src.database.mongo.db.list_collection_names():
-#         articles_collection = src.database.mongo.db['todos']
-
-#     return app
-#     app.config["MONGO_URI"] = db_uri
-#     src.database.mongo.init_app(app)
-
-
 def create_app():
     app = Flask(__name__)
     app.config.from_object('flask_config.Config')
