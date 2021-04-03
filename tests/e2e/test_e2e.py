@@ -10,6 +10,8 @@ import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 import uuid
+import pymongo
+import certifi
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -26,7 +28,6 @@ def test_app():
     db = client.todoDB
     collection = db.todos
     board_id = create_board(collection)
-    update_env_vars(collection, board_id)
     # construct the new application
     application = app.create_app()
     # start the app in its own thread.
@@ -37,18 +38,6 @@ def test_app():
     # Tear Down
     thread.join(1) 
     delete_board(collection, board_id)
-
-def update_env_vars(collection, board_id):
-    os.environ['BOARD_ID'] = board_id
-
-    lists = mongoDB.get_board(collection, board_id)
-    for list in lists:
-        if list['name'] == 'To Do':
-            os.environ['TODO_LIST_ID'] = list['id']
-        elif list['name'] == 'Doing':
-            os.environ['DOING_LIST_ID'] = list['id']
-        else:
-            os.environ['DONE_LIST_ID'] = list['id']
 
 # THIS IS USED TO RUN THE E2E TESTS IN DOCKER CONTAINER
 @pytest.fixture(scope='module') 
@@ -111,27 +100,25 @@ def create_board(collection):
     collection.insert_one(
         {
             'board_id': board_id,
-            'lists': [
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'todo',
-                    'cards': [
-                    ]
-                },
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'doing',
-                    'cards': [
-                    ]
-                },
-                {
-                    'list_id': str(uuid.uuid4()),
-                    'name': 'done',
-                    'cards': [
-                    ]
-                }
-            ]
-            
+            'list_id': 'todo_list_id',
+            'list_name': 'todo',
+            'cards': []
+        }
+    )
+    collection.insert_one(
+        {
+            'board_id': board_id,
+            'list_id': 'doing_list_id',
+            'list_name': 'doing',
+            'cards': []
+        }
+    )
+    collection.insert_one(
+        {
+            'board_id': board_id,
+            'list_id': 'done_list_id',
+            'list_name': 'done',
+            'cards': []
         }
     )
     return board_id
