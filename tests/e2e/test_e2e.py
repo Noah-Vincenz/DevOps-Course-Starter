@@ -26,9 +26,9 @@ def test_app():
     #     tlsCAFile=certifi.where()
     # )
     # construct the new application
+    os.environ['BOARD_ID'] = 'board_id'
     application, collection = app.create_app()
-    board_id = create_board(collection)
-    os.environ['BOARD_ID'] = board_id
+    create_board(collection)
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False)) 
     thread.daemon = True
@@ -36,7 +36,7 @@ def test_app():
     yield app
     # Tear Down
     thread.join(1) 
-    delete_board(collection, board_id)
+    delete_board(collection)
 
 # THIS IS USED TO RUN THE E2E TESTS IN DOCKER CONTAINER
 @pytest.fixture(scope='module') 
@@ -95,10 +95,9 @@ def create_board(collection):
     Returns:
         The id of the newly created board.
     """
-    board_id = str(uuid.uuid4())
     collection.insert_one(
         {
-            'board_id': board_id,
+            'board_id': 'board_id',
             'list_id': 'todo_list_id',
             'list_name': 'todo',
             'cards': []
@@ -106,7 +105,7 @@ def create_board(collection):
     )
     collection.insert_one(
         {
-            'board_id': board_id,
+            'board_id': 'board_id',
             'list_id': 'doing_list_id',
             'list_name': 'doing',
             'cards': []
@@ -114,17 +113,19 @@ def create_board(collection):
     )
     collection.insert_one(
         {
-            'board_id': board_id,
+            'board_id': 'board_id',
             'list_id': 'done_list_id',
             'list_name': 'done',
             'cards': []
         }
     )
+    print('boooooard')
+    print(board_id)
     return board_id
 
 
-def delete_board(collection, board_id):
+def delete_board(collection):
     """
     Deletes a document representing a board with given id. Returns nothing.
     """
-    collection.delete_one( { 'board_id': board_id } )
+    collection.delete_one( { 'board_id': 'board_id' } )
