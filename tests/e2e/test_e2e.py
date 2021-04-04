@@ -55,7 +55,7 @@ def test_task_journey(driver, test_app):
     driver.find_element_by_id("description-input").send_keys("Tidy room and wipe desk")
     driver.find_element_by_id("create-btn").click()
     els = driver.find_elements_by_tag_name("td")
-    assert len(els) == 5
+    assert len(els) == 15
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "todo"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
@@ -83,7 +83,7 @@ def test_task_journey(driver, test_app):
 
 def create_board(collection):
     """
-    Creates a new board id and documents representing our lists and inserts these into our collection.
+    Creates documents representing our lists and inserts these into our collection.
     """
     collection.insert_one(
         {
@@ -113,6 +113,6 @@ def create_board(collection):
 
 def delete_board(collection):
     """
-    Deletes a document representing a board with given id. Returns nothing.
+    Deletes all document that have been created for the test. Returns nothing.
     """
     collection.delete_many( { 'board_id': 'board_id' } )
