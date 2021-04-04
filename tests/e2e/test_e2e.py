@@ -91,9 +91,6 @@ def test_task_journey(driver, test_app):
 def create_board(collection):
     """
     Creates a new board id and documents representing our lists and inserts these into our collection.
-
-    Returns:
-        The id of the newly created board.
     """
     collection.insert_one(
         {
@@ -119,7 +116,6 @@ def create_board(collection):
             'cards': []
         }
     )
-    return board_id
 
 
 def delete_board(collection):
