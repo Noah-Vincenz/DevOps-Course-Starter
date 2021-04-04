@@ -9,9 +9,6 @@ import app
 import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-import uuid
-import pymongo
-import certifi
 
 @pytest.fixture(scope='module')
 def test_app():
