@@ -28,6 +28,7 @@ def test_app():
     # construct the new application
     application, collection = app.create_app()
     board_id = create_board(collection)
+    os.environ['BOARD_ID'] = board_id
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False)) 
     thread.daemon = True
