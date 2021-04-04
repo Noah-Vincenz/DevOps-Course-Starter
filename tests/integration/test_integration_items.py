@@ -4,10 +4,6 @@ import os
 import pytest
 import pymongo
 import mongomock
-import uuid
-import sys
-import time
-
 
 def populate_collection(collection):
     collection.insert_one(

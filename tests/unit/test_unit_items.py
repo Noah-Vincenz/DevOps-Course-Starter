@@ -5,7 +5,6 @@ import mongomock
 import uuid
 import certifi
 
-
 def mock_find_one(obj):
     if obj['list_name'] == 'todo':
         return {
