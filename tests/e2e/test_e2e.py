@@ -119,8 +119,6 @@ def create_board(collection):
             'cards': []
         }
     )
-    print('boooooard')
-    print(board_id)
     return board_id
 
 
