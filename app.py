@@ -10,8 +10,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('flask_config.Config')
     board_id = os.getenv('BOARD_ID')
+    print('BOARDID BEFORE')
+    print(board_id)
     db_username = os.getenv('MONGO_USERNAME')
+    print(db_username)
     db_password = os.getenv('MONGO_PW')
+    print(db_password)
     client = pymongo.MongoClient(
         "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
         tlsCAFile=certifi.where()
