@@ -19,13 +19,6 @@ def test_app():
     # Use our test e2e config instead of the 'real' version 
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
-    # db_username = os.getenv('MONGO_USERNAME')
-    # db_password = os.getenv('MONGO_PW')
-    # client = pymongo.MongoClient(
-    #     "mongodb+srv://{}:{}@cluster0.huksc.mongodb.net/todoDB?retryWrites=true&w=majority".format(db_username, db_password), 
-    #     tlsCAFile=certifi.where()
-    # )
-    # construct the new application
     os.environ['BOARD_ID'] = 'board_id'
     application, collection = app.create_app()
     create_board(collection)

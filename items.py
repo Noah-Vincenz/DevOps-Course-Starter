@@ -36,10 +36,6 @@ def get_list(collection, board_id, list_name):
     Returns:
         board: The list with the given name.
     """
-    print('BOARDID')
-    print(board_id)
-    print('LISTNAME')
-    print(list_name)
     return collection.find_one(
         { 
             'board_id': board_id,

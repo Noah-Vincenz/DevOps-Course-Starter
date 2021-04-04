@@ -10,8 +10,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('flask_config.Config')
     board_id = os.getenv('BOARD_ID')
-    print('BOARDID BEFORE')
-    print(board_id)
     db_username = os.getenv('MONGO_USERNAME')
     db_password = os.getenv('MONGO_PW')
     client = pymongo.MongoClient(
