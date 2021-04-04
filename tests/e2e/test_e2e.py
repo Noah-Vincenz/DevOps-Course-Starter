@@ -115,4 +115,4 @@ def delete_board(collection):
     """
     Deletes a document representing a board with given id. Returns nothing.
     """
-    collection.delete_one( { 'board_id': 'board_id' } )
+    collection.delete_many( { 'board_id': 'board_id' } )
