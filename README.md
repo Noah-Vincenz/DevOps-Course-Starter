@@ -11,14 +11,14 @@ To setup the application run
 $ cp -n .env.template .env
 ```
 to create a `.env` plain text file in the root directory of the project. 
-This `.env` file is used by flask to set environment variables, enabling things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. Populate the following variables inside the `.env` file with your Trello App API details/credentials:
+This `.env` file is used by flask to set environment variables, enabling things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. Populate the following variables inside the `.env` file with the `todoDB` MongoDB database and `todos` collection details/credentials at `cluster0.huksc.mongodb.net`:
 ```
-API_KEY=... # your trello api key
-API_TOKEN=... # your trello api token
 TODO_LIST_ID=... # your 'todo' list id
 DOING_LIST_ID=... # your 'done' list id
 DONE_LIST_ID=... # your 'done' list id
-TRELLO_BOARD_ID=... # your board id
+BOARD_ID=... # your board id
+MONGO_USERNAME=... # your DB username
+MONGO_PW=... # your DB password
 ```
 Note that *.env* has been added to the gitignore file so that these secrets will not be commited to git.
 Now, our app is ready to be tested (see _Running the tests_) and/or run (see _Running the app_).
@@ -48,7 +48,7 @@ $ docker build --target test --tag todo-app:tests .
 ```
 to build a test-mode docker image from ```Dockerfile```, followed by
 ```bash
-$ docker run --env API_KEY=<API_KEY> --env API_TOKEN=<API_TOKEN> --env TODO_LIST_ID=<TODO_LIST_ID> --env DOING_LIST_ID=<DOING_LIST_ID> --env DONE_LIST_ID=<DONE_LIST_ID> --env TRELLO_BOARD_ID=<TRELLO_BOARD_ID> --env SECRET_KEY=<SECRET_KEY> todo-app:tests tests
+$ docker run --env TODO_LIST_ID=<TODO_LIST_ID> --env DOING_LIST_ID=<DOING_LIST_ID> --env DONE_LIST_ID=<DONE_LIST_ID> --env BOARD_ID=<BOARD_ID> --env MONGO_USERNAME=<MONGO_USERNAME> --env MONGO_PW=<MONGO_PW> --env SECRET_KEY=<SECRET_KEY> todo-app:tests tests
 ```
 to run all the tests (including end-to-end tests) in ```tests/``` by running the image. (Note: input the values for the environment variables)
 
