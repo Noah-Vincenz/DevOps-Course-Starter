@@ -11,12 +11,12 @@ python-dotenv = "^0.14.0"
 requests = "^2.24.0"
 python-dateutil = "^2.8.1"
 pymongo = {extras = ["srv"], version = "^3.11.3"}
-mongomock = "^3.22.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.1"
 selenium = "^3.141.0"
 pytest-cov = "^2.10.1"
+mongomock = "^3.22.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
