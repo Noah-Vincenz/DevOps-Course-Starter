@@ -11,7 +11,7 @@ To setup the application run
 $ cp -n .env.template .env
 ```
 to create a `.env` plain text file in the root directory of the project. 
-This `.env` file is used by flask to set environment variables, enabling things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. Populate the following variables inside the `.env` file with your MongoDB collection details/credentials:
+This `.env` file is used by flask to set environment variables, enabling things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. Populate the following variables inside the `.env` file with the `todoDB` MongoDB database and `todos` collection details/credentials at `cluster0.huksc.mongodb.net`:
 ```
 TODO_LIST_ID=... # your 'todo' list id
 DOING_LIST_ID=... # your 'done' list id
