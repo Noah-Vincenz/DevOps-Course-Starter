@@ -4,7 +4,9 @@ from viewmodel import ViewModel
 import pymongo
 import certifi
 import os
-
+from flask_login import (LoginManager, current_user, login_required,
+                            login_user, logout_user, UserMixin,
+                            confirm_login, fresh_login_required)
 
 def create_app():
     app = Flask(__name__)
@@ -19,7 +21,20 @@ def create_app():
     db = client.todoDB
     collection = db.todos
 
+    login_manager = LoginManager()
+
+    @login_manager.unauthorized_handler
+    def unauthenticated():
+        pass # Add logic to redirect to Github OAuth flow when unauthenticated
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return None
+
+    login_manager.init_app(app)
+
     @app.route('/')
+    @login_required
     def index():
         items = mongoDB.get_items(collection, board_id)
         item_view_model = ViewModel(items[0], items[1], items[2])
