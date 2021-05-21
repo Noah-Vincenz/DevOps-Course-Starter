@@ -2,8 +2,6 @@ import items as mongoDB
 from card import Card
 import pymongo
 import mongomock
-import uuid
-import certifi
 
 def mock_find_one(obj):
     if obj['list_name'] == 'todo':

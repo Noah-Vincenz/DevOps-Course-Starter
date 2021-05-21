@@ -51,6 +51,8 @@ def test_task_journey(driver, test_app):
     driver.find_element_by_id("title-input").send_keys("Clean room")
     driver.find_element_by_id("description-input").send_keys("Tidy room and wipe desk")
     driver.find_element_by_id("create-btn").click()
+    els = driver.find_elements_by_tag_name("td")
+    assert len(els) == 5
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "todo"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
