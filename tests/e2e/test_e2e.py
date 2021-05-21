@@ -58,25 +58,25 @@ def test_task_journey(driver, test_app):
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
     #Start item
     driver.find_element_by_class_name("start-btn").click()
-    time.sleep(2) # sleep for 2 seconds
+    time.sleep(3) # sleep for 3 seconds
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "doing"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
     #Complete item
     driver.find_element_by_class_name("complete-btn").click()
-    time.sleep(2) # sleep for 2 seconds
+    time.sleep(3) # sleep for 3 seconds
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "done"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
     #Undo item
     driver.find_element_by_class_name("undo-btn").click()
-    time.sleep(2) # sleep for 2 seconds
+    time.sleep(3) # sleep for 3 seconds
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "doing"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
     #Stop item
     driver.find_element_by_class_name("stop-btn").click()
-    time.sleep(2) # sleep for 2 seconds
+    time.sleep(3) # sleep for 3 seconds
     assert driver.find_element_by_xpath("//td[2]").text == "Clean room"
     assert driver.find_element_by_xpath("//td[3]").text == "todo"
     assert driver.find_element_by_xpath("//td[4]").text == "Tidy room and wipe desk"
