@@ -17,7 +17,8 @@ def test_app():
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
     os.environ['BOARD_ID'] = 'board_id'
-    application, collection = app.create_app()
+    application = app.create_app()
+    collection = app.get_collection()
     create_board(collection)
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False)) 
@@ -29,21 +30,21 @@ def test_app():
     delete_board(collection)
 
 # THIS IS USED TO RUN THE E2E TESTS IN DOCKER CONTAINER
-@pytest.fixture(scope='module') 
-def driver():
-    opts = webdriver.ChromeOptions()
-    opts.add_argument('--headless') 
-    opts.add_argument('--no-sandbox') 
-    opts.add_argument('--disable-dev-shm-usage')
-    with webdriver.Chrome('./chromedriver', options=opts) as driver:
-        yield driver
-
-# UNCOMMENT THIS TO RUN THE E2E TESTS LOCALLY - COMMENT THE ABOVE
 # @pytest.fixture(scope='module') 
 # def driver():
-#     with webdriver.Firefox() as driver:
-#         driver.implicitly_wait(2)
+#     opts = webdriver.ChromeOptions()
+#     opts.add_argument('--headless') 
+#     opts.add_argument('--no-sandbox') 
+#     opts.add_argument('--disable-dev-shm-usage')
+#     with webdriver.Chrome('./chromedriver', options=opts) as driver:
 #         yield driver
+
+# UNCOMMENT THIS TO RUN THE E2E TESTS LOCALLY - COMMENT THE ABOVE
+@pytest.fixture(scope='module') 
+def driver():
+    with webdriver.Firefox() as driver:
+        driver.implicitly_wait(2)
+        yield driver
 
 def test_task_journey(driver, test_app): 
     driver.get('http://localhost:5000/')

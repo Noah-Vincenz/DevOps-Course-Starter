@@ -8,10 +8,7 @@ from flask_login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin,
                             confirm_login, fresh_login_required)
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object('flask_config.Config')
-    board_id = os.getenv('BOARD_ID')
+def get_collection():
     db_username = os.getenv('MONGO_USERNAME')
     db_password = os.getenv('MONGO_PW')
     client = pymongo.MongoClient(
@@ -19,22 +16,27 @@ def create_app():
         tlsCAFile=certifi.where()
     )
     db = client.todoDB
-    collection = db.todos
+    return db.todos
 
-    login_manager = LoginManager()
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('flask_config.Config')
+    board_id = os.getenv('BOARD_ID')
+    collection = get_collection()
 
-    @login_manager.unauthorized_handler
-    def unauthenticated():
-        pass # Add logic to redirect to Github OAuth flow when unauthenticated
+    # login_manager = LoginManager()
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return None
+    # @login_manager.unauthorized_handler
+    # def unauthenticated():
+    #     pass # Add logic to redirect to Github OAuth flow when unauthenticated
 
-    login_manager.init_app(app)
+    # @login_manager.user_loader
+    # def load_user(user_id):
+    #     return None
+
+    # login_manager.init_app(app)
 
     @app.route('/')
-    @login_required
     def index():
         items = mongoDB.get_items(collection, board_id)
         item_view_model = ViewModel(items[0], items[1], items[2])
@@ -67,4 +69,4 @@ def create_app():
         mongoDB.stop_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 
-    return app, collection
+    return app
