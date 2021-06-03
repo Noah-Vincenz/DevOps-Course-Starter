@@ -3,10 +3,15 @@ import dateutil.parser
 
 class ViewModel:
 
-    def __init__(self, todo_items, doing_items, done_items):
+    def __init__(self, roles, todo_items, doing_items, done_items):
+        self._roles = roles
         self._todo_items = todo_items
         self._doing_items = doing_items
         self._done_items = done_items
+
+    @property
+    def roles(self):
+        return self._roles
 
     @property
     def todo_items(self):
