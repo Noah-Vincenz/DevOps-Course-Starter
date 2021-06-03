@@ -11,3 +11,15 @@ class TodoUser(UserMixin):
             self.roles = ['writer', 'reader']
         else:
             self.roles = ['reader']
+
+    def is_reader(self):
+        if ('reader' not in self.roles):
+            print('User does not have required role: reader')
+            return False
+        return True
+
+    def is_writer(self):
+        if ('writer' not in self.roles):
+            print('User does not have required role: writer')
+            return False
+        return True

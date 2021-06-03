@@ -1,3 +1,4 @@
+from TodoUser import TodoUser
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo.client_options import _parse_ssl_options
 import items as mongoDB
@@ -36,58 +37,49 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
-        if ('reader' not in current_user.roles):
-            print('User does not have required role: reader')
-            return redirect(url_for('index'))
-        items = mongoDB.get_items(collection, board_id)
-        item_view_model = ViewModel(items[0], items[1], items[2])
+        if (current_user.is_reader()):
+            items = mongoDB.get_items(collection, board_id)
+            item_view_model = ViewModel(items[0], items[1], items[2])
+        else:
+            item_view_model = ViewModel([], [], [])
         return render_template('index.html', view_model=item_view_model)
 
     @app.route('/add', methods=['POST'])
     @login_required
     def add():
-        if ('writer' not in current_user.roles):
-            print('User does not have required role: writer')
-            return redirect(url_for('index'))
-        name = request.form.get('new_item_name')
-        description = request.form.get('new_item_description')
-        mongoDB.create_item(collection, board_id, name, description)
+        if (current_user.is_writer()):
+            name = request.form.get('new_item_name')
+            description = request.form.get('new_item_description')
+            mongoDB.create_item(collection, board_id, name, description)
         return redirect(url_for('index'))
 
     @app.route('/start/<item_id>', methods=['POST'])
     @login_required
     def start_item(item_id):
-        if ('writer' not in current_user.roles):
-            print('User does not have required role: writer')
-            return redirect(url_for('index'))
-        mongoDB.start_item(collection, board_id, item_id)
-        return redirect(url_for('index'))
+        if (current_user.is_writer()):
+            mongoDB.start_item(collection, board_id, item_id)
+        return redirect(url_for('index'))            
 
     @app.route('/complete/<item_id>', methods=['POST'])
     @login_required
     def complete_item(item_id):
-        if ('writer' not in current_user.roles):
-            print('User does not have required role: writer')
-            return redirect(url_for('index'))
-        mongoDB.complete_item(collection, board_id, item_id)
+        if (current_user.is_writer()):
+            mongoDB.complete_item(collection, board_id, item_id)
         return redirect(url_for('index'))
+
 
     @app.route('/undo/<item_id>', methods=['POST'])
     @login_required
     def undo_item(item_id):
-        if ('writer' not in current_user.roles):
-            print('User does not have required role: writer')
-            return redirect(url_for('index'))
-        mongoDB.undo_item(collection, board_id, item_id)
+        if (current_user.is_writer()):
+            mongoDB.undo_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 
     @app.route('/stop/<item_id>', methods=['POST'])
     @login_required
     def stop_item(item_id):
-        if ('writer' not in current_user.roles):
-            print('User does not have required role: writer')
-            return redirect(url_for('index'))
-        mongoDB.stop_item(collection, board_id, item_id)
+        if (current_user.is_writer()):
+            mongoDB.stop_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 
     @app.route('/login/callback', methods=['GET'])
@@ -97,13 +89,5 @@ def create_app():
         auth_state = request.args.get('state')
         github_login(auth_code, auth_state)
         return redirect(url_for('index'))
-
-    # def writer_required(func):
-    #     print(current_user)
-    #     print(current_user.id)
-    #     print(current_user.roles)
-    #     if ('writer' not in current_user.roles):
-    #         print('User does not have required role: writer')
-    #     return func
 
     return app
