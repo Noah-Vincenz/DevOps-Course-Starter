@@ -17,6 +17,7 @@ def test_app():
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
     os.environ['BOARD_ID'] = 'board_id'
+    os.environ['LOGIN_DISABLED'] = True
     application = app.create_app()
     collection = app.get_collection()
     create_board(collection)
