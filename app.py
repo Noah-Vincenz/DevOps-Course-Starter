@@ -37,11 +37,11 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
-        if (current_user.is_reader()):
+        if (isinstance(current_user, TodoUser) and current_user.is_reader()):
             items = mongoDB.get_items(collection, board_id)
             item_view_model = ViewModel(current_user.roles, items[0], items[1], items[2])
         else:
-            item_view_model = ViewModel(current_user.roles, [], [], [])
+            item_view_model = ViewModel([], [], [], [])
         return render_template('index.html', view_model=item_view_model)
 
     @app.route('/add', methods=['POST'])
