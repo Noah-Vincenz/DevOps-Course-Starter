@@ -4,7 +4,7 @@ import pytest
 from card import Card
 from datetime import datetime
 
-vm = ViewModel(["some todo items"], ["some doing items"], ["some done items"])
+vm = ViewModel(['writer', 'reader'], ['some todo items'], ['some doing items'], ['some done items'])
 today_mock = dateutil.parser.parse('2020-09-02 00:16:26.061713')
 
 def test_todo_items():

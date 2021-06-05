@@ -25,9 +25,11 @@
           <td>{{ item.status }}</td>
           <td>{{ item.description }}</td>
           <td>
+            {% if ('writer' in view_model.roles)  %}
             <form action="start/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary start-btn" type="submit">Start</button>
             </form>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
@@ -49,12 +51,14 @@
           <td>{{ item.status }}</td>
           <td>{{ item.description }}</td>
           <td>
+            {% if ('writer' in view_model.roles)  %}
             <form style="float: left; margin-right: 5px;" action="stop/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary stop-btn" type="submit">Stop</button>
             </form>
             <form action="complete/{{ item.id }}" method="post">
               <button class="btn btn-outline-primary complete-btn" type="submit">Complete</button>
             </form>
+            {% endif  %}
           </td>
         </tr>
       {% endfor %}
@@ -77,9 +81,11 @@
             <td>{{ item.status }}</td>
             <td>{{ item.description }}</td>
             <td>
+              {% if ('writer' in view_model.roles)  %}
               <form action="undo/{{ item.id }}" method="post">
                 <button class="btn btn-outline-primary undo-btn" type="submit">Undo</button>
               </form>
+              {% endif  %}
             </td>
           </tr>
         {% endfor %}
@@ -91,9 +97,11 @@
             <td>{{ item.status }}</td>
             <td>{{ item.description }}</td>
             <td>
+              {% if ('writer' in view_model.roles)  %}
               <form action="undo/{{ item.id }}" method="post">
                 <button class="btn btn-outline-primary" type="submit">Undo</button>
               </form>
+              {% endif  %}
             </td>
           </tr>
         {% endfor %}
@@ -114,6 +122,7 @@
       {% endif %}
     </tbody>
   </table><br>
+  {% if ('writer' in view_model.roles)  %}
   <div style="margin-bottom: 50px; background-color: #f2f2f2; border-style: solid; border-color: darkgray; border-width: 1px;">
     <form action="/add" method="post" style="padding: 10px;" id="create-form">
       <h3>Add a new item:</h3>
@@ -124,4 +133,5 @@
       </div>
     </form><br>
   </div>
+  {% endif  %}
 {% endblock %}

@@ -9,6 +9,9 @@ import app
 import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+from flask_login import (current_user, login_required,
+                            login_user, logout_user,
+                            confirm_login, fresh_login_required)
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -17,7 +20,9 @@ def test_app():
     file_path = find_dotenv('/.env')
     load_dotenv(file_path, override=True)
     os.environ['BOARD_ID'] = 'board_id'
-    application, collection = app.create_app()
+    os.environ['LOGIN_DISABLED'] = 'True'
+    application = app.create_app()
+    collection = app.get_collection()
     create_board(collection)
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False)) 
