@@ -22,23 +22,27 @@ def get_collection():
     return db.todos
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__) 
 
     if os.getenv('LOGIN_DISABLED') is None:
         app.config['LOGIN_DISABLED'] = False
     else:
-        app.config['LOGIN_DISABLED'] = os.getenv('LOGIN_DISABLED')
+        app.config['LOGIN_DISABLED'] = True
     init_auth(app)
 
     app.config.from_object('flask_config.Config')
     board_id = os.getenv('BOARD_ID')
     collection = get_collection()
 
+    LOGIN_DISABLED = app.config['LOGIN_DISABLED']
+
     @app.route('/')
     @login_required
     def index():
-        if (isinstance(current_user, TodoUser) and current_user.is_reader()):
-            items = mongoDB.get_items(collection, board_id)
+        items = mongoDB.get_items(collection, board_id)
+        if (LOGIN_DISABLED):
+            item_view_model = ViewModel(['writer', 'reader'], items[0], items[1], items[2]) 
+        elif (current_user.is_reader()):
             item_view_model = ViewModel(current_user.roles, items[0], items[1], items[2])
         else:
             item_view_model = ViewModel([], [], [], [])
@@ -47,7 +51,7 @@ def create_app():
     @app.route('/add', methods=['POST'])
     @login_required
     def add():
-        if (current_user.is_writer()):
+        if (LOGIN_DISABLED or current_user.is_writer()):
             name = request.form.get('new_item_name')
             description = request.form.get('new_item_description')
             mongoDB.create_item(collection, board_id, name, description)
@@ -56,14 +60,14 @@ def create_app():
     @app.route('/start/<item_id>', methods=['POST'])
     @login_required
     def start_item(item_id):
-        if (current_user.is_writer()):
+        if (LOGIN_DISABLED or current_user.is_writer()):
             mongoDB.start_item(collection, board_id, item_id)
         return redirect(url_for('index'))            
 
     @app.route('/complete/<item_id>', methods=['POST'])
     @login_required
     def complete_item(item_id):
-        if (current_user.is_writer()):
+        if (LOGIN_DISABLED or current_user.is_writer()):
             mongoDB.complete_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 
@@ -71,14 +75,14 @@ def create_app():
     @app.route('/undo/<item_id>', methods=['POST'])
     @login_required
     def undo_item(item_id):
-        if (current_user.is_writer()):
+        if (LOGIN_DISABLED or current_user.is_writer()):
             mongoDB.undo_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 
     @app.route('/stop/<item_id>', methods=['POST'])
     @login_required
     def stop_item(item_id):
-        if (current_user.is_writer()):
+        if (LOGIN_DISABLED or current_user.is_writer()):
             mongoDB.stop_item(collection, board_id, item_id)
         return redirect(url_for('index'))
 

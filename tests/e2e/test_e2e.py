@@ -9,6 +9,9 @@ import app
 import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+from flask_login import (current_user, login_required,
+                            login_user, logout_user,
+                            confirm_login, fresh_login_required)
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -31,21 +34,21 @@ def test_app():
     delete_board(collection)
 
 # THIS IS USED TO RUN THE E2E TESTS IN DOCKER CONTAINER
-@pytest.fixture(scope='module') 
-def driver():
-    opts = webdriver.ChromeOptions()
-    opts.add_argument('--headless') 
-    opts.add_argument('--no-sandbox') 
-    opts.add_argument('--disable-dev-shm-usage')
-    with webdriver.Chrome('./chromedriver', options=opts) as driver:
-        yield driver
-
-# UNCOMMENT THIS TO RUN THE E2E TESTS LOCALLY - COMMENT THE ABOVE
 # @pytest.fixture(scope='module') 
 # def driver():
-#     with webdriver.Firefox() as driver:
-#         driver.implicitly_wait(2)
+#     opts = webdriver.ChromeOptions()
+#     opts.add_argument('--headless') 
+#     opts.add_argument('--no-sandbox') 
+#     opts.add_argument('--disable-dev-shm-usage')
+#     with webdriver.Chrome('./chromedriver', options=opts) as driver:
 #         yield driver
+
+# UNCOMMENT THIS TO RUN THE E2E TESTS LOCALLY - COMMENT THE ABOVE
+@pytest.fixture(scope='module') 
+def driver():
+    with webdriver.Firefox() as driver:
+        driver.implicitly_wait(2)
+        yield driver
 
 def test_task_journey(driver, test_app): 
     driver.get('http://localhost:5000/')
